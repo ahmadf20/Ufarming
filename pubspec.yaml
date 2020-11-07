@@ -27,11 +27,30 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
+  
   get: ^3.15.0
+  image_picker: ^0.6.7+12
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.8.1
+  flutter_native_splash: ^0.1.9
+
+# To set up config file, run: `flutter pub run flutter_launcher_icons:main -f pubspec.yaml`
+# To update the icon run: `flutter pub run flutter_launcher_icons:main`
+# To update the icon run: `flutter pub run flutter_launcher_icons:main`
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/launcher_icon.png"
+
+# To update the splashscreen run: `flutter pub run flutter_native_splash:create`
+flutter_native_splash:
+    image: "assets/images/splash.png"
+    color: "#FAF8F5"
+    android_disable_fullscreen: true
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
