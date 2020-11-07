@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:get/get.dart';
+import 'package:ufarming/screens/main_screen.dart';
+import 'package:ufarming/screens/profile/profile_screen.dart';
 import 'package:ufarming/utils/my_colors.dart';
 import 'package:ufarming/utils/my_text_field.dart';
 import 'package:ufarming/widgets/my_flat_button.dart';
@@ -15,12 +19,18 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  AuthState state = AuthState.login;
+  AuthState state;
 
   TextEditingController emailTC = TextEditingController();
   TextEditingController nameTC = TextEditingController();
   TextEditingController usernameTC = TextEditingController();
   TextEditingController passwordTC = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    state = widget.authState ?? AuthState.login;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +98,11 @@ class _AuthScreenState extends State<AuthScreen> {
                   MyFlatButton(
                     text:
                         state == AuthState.login ? 'Sign In' : 'Create Account',
-                    onPressed: () {},
+                    onPressed: () {
+                      if (state == AuthState.login) {
+                        Get.offAll(MainScreen());
+                      } else {}
+                    },
                   ),
                   SizedBox(height: 35),
                   GestureDetector(

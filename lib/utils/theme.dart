@@ -11,7 +11,7 @@ ThemeData themeData = ThemeData(
 );
 
 SystemUiOverlayStyle mySystemUIOverlaySyle = SystemUiOverlayStyle(
-  systemNavigationBarColor: Colors.grey[50], // navigation bar color
+  systemNavigationBarColor: MyColors.canvas, // navigation bar color
   systemNavigationBarDividerColor: Colors.black26,
   systemNavigationBarIconBrightness: Brightness.dark,
   statusBarIconBrightness: Brightness.dark,

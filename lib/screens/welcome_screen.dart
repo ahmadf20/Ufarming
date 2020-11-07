@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:ufarming/screens/auth_screen.dart';
 import 'package:ufarming/utils/my_colors.dart';
 import 'package:ufarming/widgets/my_flat_button.dart';
@@ -50,14 +51,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   MyOutlineButton(
                     text: 'SIGN IN',
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => AuthScreen()));
+                      Get.to(AuthScreen());
                     },
                   ),
                   SizedBox(height: 15),
                   MyFlatButton(
                     text: 'GET STARTED',
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(AuthScreen(
+                        authState: AuthState.register,
+                      ));
+                    },
                   ),
                 ],
               ),

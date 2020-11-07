@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/route_manager.dart';
 import 'package:ufarming/screens/welcome_screen.dart';
 import 'package:ufarming/utils/theme.dart';
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     SystemChrome.setSystemUIOverlayStyle(mySystemUIOverlaySyle);
 
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Ufarming',
       debugShowCheckedModeBanner: false,
       theme: themeData,
