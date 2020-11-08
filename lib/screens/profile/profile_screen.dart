@@ -1,14 +1,49 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/route_manager.dart';
 import 'package:ufarming/screens/auth_screen.dart';
 import 'package:ufarming/screens/profile/edit_profile_screen.dart';
+import 'package:ufarming/utils/formatting.dart';
 import 'package:ufarming/utils/my_colors.dart';
 import 'package:ufarming/utils/push_local_notif.dart';
+import 'package:ufarming/utils/shared_preferences.dart';
 import 'package:ufarming/widgets/my_app_bar.dart';
 import 'package:ufarming/widgets/my_outline_button.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key key}) : super(key: key);
+
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  String address;
+
+  void updateLocation() async {
+    BotToast.showLoading();
+    Position position = await Geolocator.getCurrentPosition();
+    setPosition(position.latitude, position.longitude);
+    address = await printLocation(position.latitude, position.longitude);
+    if (mounted) setState(() {});
+    BotToast.closeAllLoading();
+  }
+
+  void initLocation() async {
+    Map positions = await getPosition();
+    if (positions['latitude'] != null && positions['longitude'] != null) {
+      address =
+          await printLocation(positions['latitude'], positions['longitude']);
+      if (mounted) setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initLocation();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +117,8 @@ class ProfileScreen extends StatelessWidget {
             buildSectionTitle('Settings'),
             buildListTile(
               'Set Location',
-              'Cimahi, Indonesia',
-              onTap: () {},
+              address ?? 'not set',
+              onTap: () => updateLocation(),
             ),
             buildListTile(
               'Test Notification',
@@ -99,9 +134,19 @@ class ProfileScreen extends StatelessWidget {
               },
             ),
             buildListTile(
-              'About Us',
-              'Learn more about who develops this App',
-              onTap: () {},
+              'About App',
+              'Learn more about this App',
+              onTap: () {
+                showLicensePage(
+                  context: context,
+                  applicationIcon: Image.asset(
+                    'assets/icons/launcher_icon.png',
+                    width: MediaQuery.of(context).size.width * 0.5,
+                  ),
+                  applicationName: 'Ufarming',
+                  applicationVersion: 'v1.0.0',
+                );
+              },
             ),
             SizedBox(height: 55),
             MyOutlineButton(
@@ -111,8 +156,10 @@ class ProfileScreen extends StatelessWidget {
                 color: Colors.red,
               ),
               color: Colors.red,
-              onPressed: () {
-                Get.offAll(AuthScreen());
+              onPressed: () async {
+                await logOut().then((res) {
+                  if (res) Get.offAll(AuthScreen());
+                });
               },
             ),
             SizedBox(height: 25),

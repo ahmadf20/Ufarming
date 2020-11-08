@@ -1,7 +1,10 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:ufarming/screens/main_screen.dart';
+import 'package:ufarming/services/auth_service.dart';
+import 'package:ufarming/utils/custom_bot_toast.dart';
 import 'package:ufarming/utils/my_colors.dart';
 import 'package:ufarming/utils/my_text_field.dart';
 import 'package:ufarming/widgets/my_flat_button.dart';
@@ -24,6 +27,41 @@ class _AuthScreenState extends State<AuthScreen> {
   TextEditingController nameTC = TextEditingController();
   TextEditingController usernameTC = TextEditingController();
   TextEditingController passwordTC = TextEditingController();
+
+  Future loginHandler() async {
+    if (usernameTC.text.isEmpty || passwordTC.text.isEmpty) return;
+    BotToast.showLoading();
+    login(usernameTC.text, passwordTC.text).then((res) {
+      if (res == true)
+        Get.offAll(MainScreen());
+      else
+        customBotToastText(res);
+    }).whenComplete(() {
+      BotToast.closeAllLoading();
+    });
+  }
+
+  Future registerHandler() async {
+    if (usernameTC.text.isEmpty ||
+        passwordTC.text.isEmpty ||
+        nameTC.text.isEmpty ||
+        emailTC.text.isEmpty) return;
+    BotToast.showLoading();
+    Map data = {
+      'username': usernameTC.text,
+      'email': emailTC.text,
+      'password': passwordTC.text,
+      'name': nameTC.text,
+    };
+    register(data).then((res) {
+      if (res == true)
+        Get.offAll(MainScreen());
+      else
+        customBotToastText(res);
+    }).whenComplete(() {
+      BotToast.closeAllLoading();
+    });
+  }
 
   @override
   void initState() {
@@ -98,9 +136,10 @@ class _AuthScreenState extends State<AuthScreen> {
                     text:
                         state == AuthState.login ? 'Sign In' : 'Create Account',
                     onPressed: () {
-                      if (state == AuthState.login) {
-                        Get.offAll(MainScreen());
-                      } else {}
+                      if (state == AuthState.login)
+                        loginHandler();
+                      else
+                        registerHandler();
                     },
                   ),
                   SizedBox(height: 35),

@@ -36,6 +36,15 @@ dependencies:
   path_provider: ^1.6.24
   rxdart: ^0.24.1
 
+  geolocator: ^6.1.5
+  geocoding: ^1.0.5
+
+  shared_preferences: ^0.5.12+4
+  dio: ^3.0.10
+  logger: ^0.9.4
+
+  bot_toast: ^3.0.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

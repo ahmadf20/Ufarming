@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -82,6 +83,8 @@ class MyApp extends StatelessWidget {
       title: 'Ufarming',
       debugShowCheckedModeBanner: false,
       theme: themeData,
+      builder: BotToastInit(), //1. call BotToastInit
+      navigatorObservers: [BotToastNavigatorObserver()],
       home: WelcomeScreen(),
     );
   }
