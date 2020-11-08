@@ -31,6 +31,11 @@ dependencies:
   get: ^3.15.0
   image_picker: ^0.6.7+12
 
+  #required for flutter local notification
+  flutter_local_notifications: ^3.0.1+2
+  path_provider: ^1.6.24
+  rxdart: ^0.24.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

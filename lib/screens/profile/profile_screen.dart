@@ -3,6 +3,7 @@ import 'package:get/route_manager.dart';
 import 'package:ufarming/screens/auth_screen.dart';
 import 'package:ufarming/screens/profile/edit_profile_screen.dart';
 import 'package:ufarming/utils/my_colors.dart';
+import 'package:ufarming/utils/push_local_notif.dart';
 import 'package:ufarming/widgets/my_app_bar.dart';
 import 'package:ufarming/widgets/my_outline_button.dart';
 
@@ -87,7 +88,15 @@ class ProfileScreen extends StatelessWidget {
             buildListTile(
               'Test Notification',
               'Make sure your notification works properly',
-              onTap: () {},
+              onTap: () {
+                showNotification(
+                  'Test Notification',
+                  'Yayy! The notification works fine!',
+                  channelId: 'Test Notification',
+                  channelDesc: 'Test Notification',
+                  channelName: 'Test Notification',
+                );
+              },
             ),
             buildListTile(
               'About Us',
