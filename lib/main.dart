@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/route_manager.dart';
 import 'package:rxdart/subjects.dart';
-import 'package:ufarming/screens/welcome_screen.dart';
+import 'package:ufarming/base_widget.dart';
 import 'package:ufarming/utils/theme.dart';
 
 import 'package:timezone/data/latest.dart' as tz;
@@ -83,9 +83,9 @@ class MyApp extends StatelessWidget {
       title: 'Ufarming',
       debugShowCheckedModeBanner: false,
       theme: themeData,
-      builder: BotToastInit(), //1. call BotToastInit
+      builder: BotToastInit(),
       navigatorObservers: [BotToastNavigatorObserver()],
-      home: WelcomeScreen(),
+      home: BaseWidget(),
     );
   }
 }

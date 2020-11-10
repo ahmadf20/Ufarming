@@ -1,5 +1,4 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ufarming/utils/custom_bot_toast.dart';
 import 'package:ufarming/utils/logger.dart';
 
 void setToken(String token) async {

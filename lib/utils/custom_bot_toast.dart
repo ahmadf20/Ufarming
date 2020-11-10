@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 void customBotToastText(String text) {
   BotToast.showText(
-    text: text,
+    text: text ?? '-',
     textStyle: TextStyle(
       fontSize: 14,
     ),

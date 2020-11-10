@@ -39,7 +39,10 @@ Future register(Map data) async {
   } on DioError catch (e) {
     logger.e(e);
     if (e.response != null) {
-      return e.response.data['messages'][0];
+      if (e.response.data['message'] != null) return e.response.data['message'];
+      if (e.response.data['email'] != null) return e.response.data['email'][0];
+      if (e.response.data['username'] != null)
+        return e.response.data['username'][0];
     } else {
       return ErrorMessage.connection;
     }

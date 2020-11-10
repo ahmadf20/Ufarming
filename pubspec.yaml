@@ -44,6 +44,7 @@ dependencies:
   logger: ^0.9.4
 
   bot_toast: ^3.0.5
+  cached_network_image: ^2.3.3
 
 dev_dependencies:
   flutter_test:
