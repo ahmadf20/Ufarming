@@ -14,39 +14,8 @@ import 'package:ufarming/widgets/loading_indicator.dart';
 import 'package:ufarming/widgets/my_app_bar.dart';
 import 'package:ufarming/widgets/my_outline_button.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key key}) : super(key: key);
-
-  @override
-  _ProfileScreenState createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
-  String address;
-
-  void updateLocation() async {
-    BotToast.showLoading();
-    Position position = await Geolocator.getCurrentPosition();
-    setPosition(position.latitude, position.longitude);
-    address = await printLocation(position.latitude, position.longitude);
-    if (mounted) setState(() {});
-    BotToast.closeAllLoading();
-  }
-
-  void initLocation() async {
-    Map positions = await getPosition();
-    if (positions['latitude'] != null && positions['longitude'] != null) {
-      address =
-          await printLocation(positions['latitude'], positions['longitude']);
-      if (mounted) setState(() {});
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    initLocation();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,8 +104,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         buildSectionTitle('Settings'),
                         buildListTile(
                           'Set Location',
-                          address ?? 'not set',
-                          onTap: () => updateLocation(),
+                          s.address.value.isEmpty ? 'not set' : s.address.value,
+                          onTap: s.updateLocation,
                         ),
                         buildListTile(
                           'Test Notification',

@@ -7,18 +7,20 @@ import 'package:ufarming/widgets/loading_indicator.dart';
 Widget loadImage(
   String linkGambar, {
   bool isShowLoading = true,
-  Alignment alignment,
+  Alignment alignment = Alignment.center,
   bool hasErrorWidget = true,
   Color color,
+  BoxFit boxFit = BoxFit.cover,
 }) {
   if (linkGambar == null || linkGambar.isEmpty) {
     return Icon(Icons.error_outline);
   } else {
     try {
       Widget image = CachedNetworkImage(
+        fit: boxFit,
         color: color,
         imageUrl: Uri.encodeFull('$linkGambar'),
-        alignment: alignment ?? Alignment.center,
+        alignment: alignment,
         placeholder: (context, url) {
           if (isShowLoading) {
             return loadingIndicator(color: Theme.of(context).accentColor);

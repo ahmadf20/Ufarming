@@ -30,6 +30,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   Future loginHandler() async {
     if (usernameTC.text.isEmpty || passwordTC.text.isEmpty) return;
+
     BotToast.showLoading();
     login(usernameTC.text, passwordTC.text).then((res) {
       if (res == true)
@@ -46,6 +47,7 @@ class _AuthScreenState extends State<AuthScreen> {
         passwordTC.text.isEmpty ||
         nameTC.text.isEmpty ||
         emailTC.text.isEmpty) return;
+
     BotToast.showLoading();
     Map data = {
       'username': usernameTC.text,
@@ -112,6 +114,10 @@ class _AuthScreenState extends State<AuthScreen> {
                         MyTextField(
                           label: 'Email Address',
                           controller: emailTC,
+                          validator: (val) {
+                            if (!val.isEmail)
+                              return 'Enter a valid email adress';
+                          },
                         ),
                         SizedBox(height: 15),
                         MyTextField(

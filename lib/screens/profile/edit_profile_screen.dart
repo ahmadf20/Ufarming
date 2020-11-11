@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ufarming/controllers/profile_controller.dart';
+import 'package:ufarming/controllers/edit_profile_controller.dart';
+import 'package:ufarming/utils/logger.dart';
 import 'package:ufarming/utils/my_colors.dart';
 import 'package:ufarming/utils/my_text_field.dart';
 import 'package:ufarming/widgets/load_image.dart';
@@ -11,8 +12,8 @@ class EditProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetX<ProfileController>(
-      init: ProfileController(),
+    return GetX<EditProfileController>(
+      init: EditProfileController(),
       builder: (s) {
         return Scaffold(
           appBar: PreferredSize(
@@ -77,6 +78,9 @@ class EditProfileScreen extends StatelessWidget {
               MyTextField(
                 label: 'Email Address',
                 controller: s.emailTC,
+                validator: (val) {
+                  if (!val.isEmail) return 'Enter a valid email adress';
+                },
               ),
               SizedBox(height: 12.5),
               MyTextField(
@@ -93,13 +97,19 @@ class EditProfileScreen extends StatelessWidget {
                 label: 'Password',
                 controller: s.passTC,
                 obscureText: true,
+                validator: (val) {
+                  if (s.passTC.text.isEmpty) return 'Password cannot be empty';
+                },
               ),
               SizedBox(height: 12.5),
               MyTextField(
-                label: 'Re-Type Password',
-                controller: s.repassTC,
-                obscureText: true,
-              ),
+                  label: 'Re-Type Password',
+                  controller: s.repassTC,
+                  obscureText: true,
+                  validator: (val) {
+                    if (s.passTC.text != s.repassTC.text)
+                      return 'Password don\'t match';
+                  }),
             ],
           ),
         );

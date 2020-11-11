@@ -5,6 +5,8 @@ import 'package:ufarming/utils/my_colors.dart';
 class MyTextField extends StatelessWidget {
   final String label;
   final bool obscureText;
+  final String errorText;
+  final Function(String) validator;
   final TextEditingController controller;
 
   const MyTextField({
@@ -12,12 +14,14 @@ class MyTextField extends StatelessWidget {
     @required this.label,
     this.obscureText = false,
     this.controller,
+    this.errorText,
+    this.validator,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+      padding: EdgeInsets.fromLTRB(15, 15, 15, 12.5),
       decoration: BoxDecoration(
         color: Color(0xfff7f5f2),
         border: Border.all(
@@ -26,7 +30,7 @@ class MyTextField extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(5),
       ),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
         obscureText: obscureText,
         style: TextStyle(
@@ -34,6 +38,8 @@ class MyTextField extends StatelessWidget {
           fontWeight: FontWeight.w600,
           color: MyColors.darkGrey,
         ),
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: validator,
         decoration: InputDecoration(
           labelStyle: TextStyle(
             fontFamily: 'OpenSans',
@@ -42,8 +48,11 @@ class MyTextField extends StatelessWidget {
           ),
           floatingLabelBehavior: FloatingLabelBehavior.always,
           fillColor: Color(0xFFF7F5F2),
+          contentPadding: EdgeInsets.zero,
           border: InputBorder.none,
+          isDense: true,
           labelText: label,
+          errorText: errorText,
         ),
       ),
     );
