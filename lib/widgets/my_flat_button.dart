@@ -6,7 +6,11 @@ class MyFlatButton extends StatelessWidget {
   final String text;
   final Function onPressed;
 
-  const MyFlatButton({Key key, this.text, this.onPressed}) : super(key: key);
+  const MyFlatButton({
+    Key key,
+    @required this.text,
+    this.onPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

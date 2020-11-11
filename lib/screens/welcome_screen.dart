@@ -40,7 +40,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   ),
                   SizedBox(height: 25),
                   Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin mollis at risus ut elementum",
+                    "The love of gardening is a seed once sown that never dies. — Gertrude Jekyll",
                     style: TextStyle(
                       fontFamily: "OpenSans",
                       fontSize: 14,

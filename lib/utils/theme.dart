@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'my_colors.dart';
 
 ThemeData themeData = ThemeData(
-  primaryColor: MyColors.primary,
+  primaryColor: MyColors.canvas,
   canvasColor: MyColors.canvas,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   accentColor: MyColors.grey,

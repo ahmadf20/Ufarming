@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:ufarming/controllers/profile_controller.dart';
 import 'package:ufarming/screens/auth_screen.dart';
 import 'package:ufarming/screens/profile/edit_profile_screen.dart';
-import 'package:ufarming/utils/formatting.dart';
 import 'package:ufarming/utils/my_colors.dart';
 import 'package:ufarming/utils/push_local_notif.dart';
 import 'package:ufarming/utils/shared_preferences.dart';

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ufarming/screens/articles_screen.dart';
+import 'package:ufarming/screens/home_screen.dart';
+import 'package:ufarming/screens/my_plants_screen.dart';
 import 'package:ufarming/screens/profile/profile_screen.dart';
 import 'package:ufarming/utils/my_colors.dart';
 
@@ -15,11 +18,11 @@ class _MainScreenState extends State<MainScreen> {
   Widget buildBody(index) {
     switch (index) {
       case 0:
-        return Text('Home');
+        return HomeScreen();
       case 1:
-        return Text('My Plant');
+        return MyPlantsScreen();
       case 2:
-        return Text('Learn');
+        return ArticlesScreen();
       case 3:
         return ProfileScreen();
     }

@@ -6,16 +6,20 @@ class MyTextField extends StatelessWidget {
   final String label;
   final bool obscureText;
   final String errorText;
+  final String hintText;
+  final Icon suffix;
   final Function(String) validator;
   final TextEditingController controller;
 
   const MyTextField({
     Key key,
-    @required this.label,
+    this.label,
     this.obscureText = false,
     this.controller,
     this.errorText,
     this.validator,
+    this.hintText,
+    this.suffix,
   }) : super(key: key);
 
   @override
@@ -50,9 +54,14 @@ class MyTextField extends StatelessWidget {
           fillColor: Color(0xFFF7F5F2),
           contentPadding: EdgeInsets.zero,
           border: InputBorder.none,
+          suffix: suffix,
           isDense: true,
           labelText: label,
           errorText: errorText,
+          hintText: hintText,
+          hintStyle: TextStyle(
+            color: MyColors.grey,
+          ),
         ),
       ),
     );
