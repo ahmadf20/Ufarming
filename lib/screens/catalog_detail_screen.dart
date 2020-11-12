@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ufarming/screens/plant_information_screen.dart';
 import 'package:ufarming/utils/my_colors.dart';
 import 'package:ufarming/utils/my_text_field.dart';
 import 'package:ufarming/widgets/my_app_bar.dart';
@@ -61,7 +62,9 @@ class CatalogDetailScreen extends StatelessWidget {
                   SizedBox(height: 30),
                   MyFlatButton(
                     text: 'Start the Journey',
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.back();
+                    },
                   ),
                 ],
               ),
@@ -125,10 +128,12 @@ class CatalogDetailScreen extends StatelessWidget {
           MyCard(
             title: 'How to Set Up',
             body: 'Learn how to set up the environtment',
+            // onTap: () => Get.to(PlantInformationScreen()),
           ),
           MyCard(
             title: 'How to Grow It',
             body: 'Learn how to grow the plant like an expert',
+            onTap: () => Get.to(PlantInformationScreen()),
           ),
           MyCard(
             title: 'Summary',
