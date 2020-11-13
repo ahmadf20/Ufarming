@@ -1,6 +1,4 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:ufarming/controllers/profile_controller.dart';
 import 'package:ufarming/screens/auth_screen.dart';

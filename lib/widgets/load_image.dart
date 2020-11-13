@@ -11,6 +11,8 @@ Widget loadImage(
   bool hasErrorWidget = true,
   Color color,
   BoxFit boxFit = BoxFit.cover,
+  double width,
+  double height,
 }) {
   if (linkGambar == null || linkGambar.isEmpty) {
     return Icon(Icons.error_outline);
@@ -19,6 +21,8 @@ Widget loadImage(
       Widget image = CachedNetworkImage(
         fit: boxFit,
         color: color,
+        height: height,
+        width: width,
         imageUrl: Uri.encodeFull('$linkGambar'),
         alignment: alignment,
         placeholder: (context, url) {

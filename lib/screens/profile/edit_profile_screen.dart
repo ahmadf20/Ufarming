@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ufarming/controllers/edit_profile_controller.dart';
-import 'package:ufarming/utils/logger.dart';
 import 'package:ufarming/utils/my_colors.dart';
 import 'package:ufarming/utils/my_text_field.dart';
 import 'package:ufarming/widgets/load_image.dart';

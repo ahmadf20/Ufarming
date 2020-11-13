@@ -28,7 +28,7 @@ class PlantInformationScreen extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Text(
-            'Spicy Parlsey',
+            'Vegetable',
             style: TextStyle(
               fontFamily: 'OpenSans',
               fontSize: 14,
