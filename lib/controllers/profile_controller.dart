@@ -6,6 +6,7 @@ import 'package:ufarming/services/user_services.dart';
 import 'package:ufarming/utils/const.dart';
 import 'package:ufarming/utils/custom_bot_toast.dart';
 import 'package:ufarming/utils/formatting.dart';
+import 'package:ufarming/utils/logger.dart';
 import 'package:ufarming/utils/shared_preferences.dart';
 
 class ProfileController extends GetxController {
@@ -19,6 +20,7 @@ class ProfileController extends GetxController {
     Position position = await Geolocator.getCurrentPosition();
     setPosition(position.latitude, position.longitude);
     address.value = await printLocation(position.latitude, position.longitude);
+    logger.v(position);
     BotToast.closeAllLoading();
   }
 

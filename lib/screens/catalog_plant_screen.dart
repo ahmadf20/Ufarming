@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ufarming/screens/catalog_detail_screen.dart';
+import 'package:ufarming/controllers/catalog_controller.dart';
+import 'package:ufarming/models/plant_model.dart';
+import 'package:ufarming/screens/catalog_plant_detail_screen.dart';
 import 'package:ufarming/utils/my_colors.dart';
 import 'package:ufarming/utils/my_text_field.dart';
+import 'package:ufarming/widgets/load_image.dart';
+import 'package:ufarming/widgets/loading_indicator.dart';
 import 'package:ufarming/widgets/my_app_bar.dart';
 
 class CatalogPlantScreen extends StatelessWidget {
@@ -10,56 +14,69 @@ class CatalogPlantScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
-        child: MyAppBar(
-          title: 'Discover Plant',
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: MyTextField(
-                hintText: 'Search ...',
-                suffix: Icon(
-                  Icons.search,
-                  color: MyColors.grey,
-                ),
-              ),
+    return GetX<CatalogControlller>(
+      init: CatalogControlller(),
+      builder: (s) {
+        return Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(60),
+            child: MyAppBar(
+              title: 'Discover Plant',
             ),
-            Expanded(
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.85,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 15,
+          ),
+          body: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: MyTextField(
+                    hintText: 'Search ...',
+                    suffix: Icon(
+                      Icons.search,
+                      color: MyColors.grey,
+                    ),
+                  ),
                 ),
-                padding: EdgeInsets.fromLTRB(25, 30, 25, 35),
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return _CardItem();
-                },
-              ),
-            )
-          ],
-        ),
-      ),
+                SizedBox(height: 15),
+                Expanded(
+                  child: s.isLoading.value
+                      ? loadingIndicator()
+                      : GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.85,
+                            crossAxisSpacing: 15,
+                            mainAxisSpacing: 15,
+                          ),
+                          padding: EdgeInsets.fromLTRB(25, 15, 25, 35),
+                          itemCount: s.plants.length,
+                          itemBuilder: (context, index) {
+                            return _CardItem(plant: s.plants[index]);
+                          },
+                        ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
 
 class _CardItem extends StatelessWidget {
-  const _CardItem({Key key}) : super(key: key);
+  final Plant plant;
+
+  const _CardItem({Key key, this.plant}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get.to(CatalogDetailScreen()),
+      onTap: () => Get.to(CatalogDetailScreen(
+        id: plant.id,
+      )),
       child: Container(
         padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
         decoration: BoxDecoration(
@@ -76,9 +93,15 @@ class _CardItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(child: Image.asset('assets/images/tomato.png')),
+            Center(
+              child: loadImage(
+                plant.picture,
+                height: 110,
+              ),
+            ),
+            SizedBox(height: 20),
             Text(
-              'Tomato',
+              plant.plantName,
               style: TextStyle(
                 fontFamily: 'Montserrat',
                 fontSize: 16,
@@ -89,7 +112,7 @@ class _CardItem extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Hydroponic',
+                  plant.categoryName,
                   style: TextStyle(
                     fontFamily: 'OpenSans',
                     fontSize: 12,
@@ -99,7 +122,7 @@ class _CardItem extends StatelessWidget {
                 ),
                 Spacer(),
                 Text(
-                  'Hard',
+                  plant.difficulty,
                   style: TextStyle(
                     fontFamily: 'OpenSans',
                     fontSize: 12,

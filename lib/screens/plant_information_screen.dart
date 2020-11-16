@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:ufarming/models/plant_detail_model.dart';
 import 'package:ufarming/utils/my_colors.dart';
+import 'package:ufarming/widgets/load_image.dart';
 import 'package:ufarming/widgets/my_app_bar.dart';
 import 'package:ufarming/widgets/my_card.dart';
 
 class PlantInformationScreen extends StatelessWidget {
-  const PlantInformationScreen({Key key}) : super(key: key);
+  final PlantDetail data;
+
+  const PlantInformationScreen({Key key, @required this.data})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +21,14 @@ class PlantInformationScreen extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.fromLTRB(25, 0, 25, 25),
         children: [
-          Image.asset('assets/images/tomato.png'),
+          loadImage(
+            data.plant.picture,
+            height: 175,
+            boxFit: BoxFit.contain,
+          ),
+          SizedBox(height: 25),
           Text(
-            'Spicy Parlsey',
+            data.plant.plantName,
             style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 25,
@@ -28,7 +38,7 @@ class PlantInformationScreen extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Text(
-            'Vegetable',
+            data.plant.typeName,
             style: TextStyle(
               fontFamily: 'OpenSans',
               fontSize: 14,
@@ -39,22 +49,19 @@ class PlantInformationScreen extends StatelessWidget {
           SizedBox(height: 40),
           MyCard(
             title: 'Summary',
-            body:
-                'As a high value and high demand product, basil is an extremely popular cash crop in aquaponics, It is often thought of as an ideal crop in aquaponics, due to its high uptake of nitrogen',
+            body: data.plant.summary,
             showDivider: true,
             showIcon: false,
           ),
           MyCard(
             title: 'Growing',
-            body:
-                'Basil grows ideally within the range of 20-25C, although it can live within the wider range of 18-30*C, Particularly, under warmer conditions,such as 279C and above, additional shade will be necessary in order to prevent tip burn among your basil crops;  uch shade should be around a twenty percent reduction and increased ventilation would be ideal. \n\nTransplantion of seedlings should occur after the basil seedlings have matured to have 4 true leaves or more. Ventilation and a stable water temperatures of 21-25*C day and night aids in reduction of many commonly incurred diseases such as gray mold, Fusarium wilt, and black spot. During plant growth, the removal of flowering tips may reduce long term bitterness.',
+            body: data.plant.growing,
             showDivider: true,
             showIcon: false,
           ),
           MyCard(
             title: 'Harvesting',
-            body:
-                'Once the basil has reached about 15cm in height, it is a good time to begin the harvesting process which can last another 4-7 weeks. Be mindful when removing and handling leaves to avoid bruising and blackening.',
+            body: data.plant.harvesting,
             showDivider: true,
             showIcon: false,
           ),
@@ -66,14 +73,38 @@ class PlantInformationScreen extends StatelessWidget {
               padding: const EdgeInsets.only(left: 5),
               child: Table(
                 children: [
-                  buildTableRow('Germination Days', '6 - 7'),
-                  buildTableRow('Germination Temperature', '20ºC - 25ºC'),
-                  buildTableRow('Growth Days', '6 - 7'),
-                  buildTableRow('Heigh', '30 - 70 cm'),
-                  buildTableRow('pH', '6 - 7'),
-                  buildTableRow('Spacing', '15 - 25 cm'),
-                  buildTableRow('Temperature', '18ºC - 25ºC'),
-                  buildTableRow('Width', '30 - 40 cm'),
+                  buildTableRow(
+                    'Germination Days',
+                    '${data.statistic.germDaysLow} - ${data.statistic.germDaysUp}',
+                  ),
+                  buildTableRow(
+                    'Germination Temperature',
+                    '${data.statistic.germTemperatureLow}ºC - ${data.statistic.germTemperatureUp}ºC',
+                  ),
+                  buildTableRow(
+                    'Growth Days',
+                    '${data.statistic.growthDaysLow} - ${data.statistic.growthDaysUp}',
+                  ),
+                  buildTableRow(
+                    'Heigh',
+                    '${data.statistic.heightLow} - ${data.statistic.heightUp} cm',
+                  ),
+                  buildTableRow(
+                    'pH',
+                    '${data.statistic.phLow} - ${data.statistic.phUp}',
+                  ),
+                  buildTableRow(
+                    'Spacing',
+                    '${data.statistic.spacingLow} - ${data.statistic.spacingUp} cm',
+                  ),
+                  buildTableRow(
+                    'Temperature',
+                    '${data.statistic.temperatureLow}ºC - ${data.statistic.temperatureUp}ºC',
+                  ),
+                  buildTableRow(
+                    'Width',
+                    '${data.statistic.widthLow} - ${data.statistic.widthUp} cm',
+                  ),
                 ],
               ),
             ),

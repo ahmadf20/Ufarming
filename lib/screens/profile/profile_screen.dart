@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+// import 'package:intl/intl.dart';
 import 'package:ufarming/controllers/profile_controller.dart';
 import 'package:ufarming/screens/auth_screen.dart';
 import 'package:ufarming/screens/profile/edit_profile_screen.dart';
@@ -16,6 +17,9 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // print(DateFormat('EEEE, dd MMMM yyyy')
+    //     .format(DateTime.fromMillisecondsSinceEpoch(1605326400 * 1000)));
+
     return GetX<ProfileController>(
         init: ProfileController(),
         builder: (s) {
