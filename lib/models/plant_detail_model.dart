@@ -45,7 +45,7 @@ class Article {
         picture: json["picture"],
         category: json["category"],
         author: json["author"],
-        timestamp: DateTime.parse(json["timestamp"]),
+        timestamp: DateTime.parse(json["created_at"]),
         description: json["description"],
       );
 }
@@ -70,22 +70,22 @@ class Statistic {
     this.widthUp,
   });
 
-  int germDaysLow;
-  int germDaysUp;
-  int germTemperatureLow;
-  int germTemperatureUp;
-  int growthDaysLow;
-  int growthDaysUp;
-  int heightLow;
-  int heightUp;
-  int phLow;
-  int phUp;
-  int spacingLow;
-  int spacingUp;
-  int temperatureLow;
-  int temperatureUp;
-  int widthLow;
-  int widthUp;
+  String germDaysLow;
+  String germDaysUp;
+  String germTemperatureLow;
+  String germTemperatureUp;
+  String growthDaysLow;
+  String growthDaysUp;
+  String heightLow;
+  String heightUp;
+  String phLow;
+  String phUp;
+  String spacingLow;
+  String spacingUp;
+  String temperatureLow;
+  String temperatureUp;
+  String widthLow;
+  String widthUp;
 
   factory Statistic.fromJson(Map<String, dynamic> json) => Statistic(
         germDaysLow: json["germ_days_low"],
@@ -96,8 +96,8 @@ class Statistic {
         growthDaysUp: json["growth_days_up"],
         heightLow: json["height_low"],
         heightUp: json["height_up"],
-        phLow: json["ph_low"],
-        phUp: json["ph_up"],
+        phLow: json["pH_low"],
+        phUp: json["pH_up"],
         spacingLow: json["spacing_low"],
         spacingUp: json["spacing_up"],
         temperatureLow: json["temperature_low"],

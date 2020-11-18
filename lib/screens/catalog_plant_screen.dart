@@ -32,6 +32,10 @@ class CatalogPlantScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: MyTextField(
                     hintText: 'Search ...',
+                    controller: s.searchTC,
+                    onChanged: (v) {
+                      s.updateQuery(v);
+                    },
                     suffix: Icon(
                       Icons.search,
                       color: MyColors.grey,
@@ -51,9 +55,9 @@ class CatalogPlantScreen extends StatelessWidget {
                             mainAxisSpacing: 15,
                           ),
                           padding: EdgeInsets.fromLTRB(25, 15, 25, 35),
-                          itemCount: s.plants.length,
+                          itemCount: s.plantList.length,
                           itemBuilder: (context, index) {
-                            return _CardItem(plant: s.plants[index]);
+                            return _CardItem(plant: s.plantList[index]);
                           },
                         ),
                 )

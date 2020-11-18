@@ -13,8 +13,6 @@ class Plant {
     this.growing,
     this.harvesting,
     this.picture,
-    this.createdAt,
-    this.updatedAt,
     this.difficulty,
     this.categoryId,
     this.typeId,
@@ -31,8 +29,6 @@ class Plant {
   String growing;
   String harvesting;
   String picture;
-  DateTime createdAt;
-  DateTime updatedAt;
   String difficulty;
   String categoryId;
   String typeId;

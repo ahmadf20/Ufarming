@@ -10,6 +10,7 @@ class MyTextField extends StatelessWidget {
   final Icon suffix;
   final Function(String) validator;
   final TextEditingController controller;
+  final Function onChanged;
 
   const MyTextField({
     Key key,
@@ -20,6 +21,7 @@ class MyTextField extends StatelessWidget {
     this.validator,
     this.hintText,
     this.suffix,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -36,6 +38,7 @@ class MyTextField extends StatelessWidget {
       ),
       child: TextFormField(
         controller: controller,
+        onChanged: onChanged,
         obscureText: obscureText,
         style: TextStyle(
           fontFamily: 'Montserrat',

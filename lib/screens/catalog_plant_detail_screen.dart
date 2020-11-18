@@ -145,7 +145,7 @@ class CatalogDetailScreen extends StatelessWidget {
                           'Total Days',
                         ),
                         buildStatistic(
-                          '${double.parse(s.plant.value.plant.successRate) * 100}%',
+                          '${double.parse(s.plant.value.plant.successRate).toInt()}%',
                           'Success Rate',
                         ),
                       ],
