@@ -1,80 +1,99 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ufarming/controllers/article_controller.dart';
+import 'package:ufarming/models/article_model.dart';
 import 'package:ufarming/screens/aricticles_detail_screen.dart';
 import 'package:ufarming/utils/my_colors.dart';
 import 'package:ufarming/widgets/load_image.dart';
+import 'package:ufarming/widgets/loading_indicator.dart';
 
 class ArticlesScreen extends StatelessWidget {
   const ArticlesScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(25, 35, 25, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Learning',
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 25,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black87,
-                  ),
+    return GetX<ArticleController>(
+      init: ArticleController(),
+      builder: (s) {
+        return Scaffold(
+          body: s.isLoading.value
+              ? loadingIndicator()
+              : ListView(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(25, 35, 25, 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Learning',
+                            style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 25,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            'The more you read, the more you know~',
+                            style: TextStyle(
+                              fontFamily: 'OpenSans',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: MyColors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(width: 25),
+                            ...s.articles.sublist(0, 3).map((item) {
+                              return _LatestPostCard(
+                                data: item,
+                              );
+                            }).toList(),
+                          ]),
+                    ),
+                    SizedBox(height: 55),
+                    ListView(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
+                      children: [
+                        ...s.articles.sublist(3).map((item) {
+                          return _PostCard(data: item);
+                        }).toList(),
+                      ],
+                    ),
+                  ],
                 ),
-                SizedBox(height: 5),
-                Text(
-                  'The more you read, the more you know~',
-                  style: TextStyle(
-                    fontFamily: 'OpenSans',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: MyColors.grey,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 20),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              SizedBox(width: 25),
-              ...['1', '2', '3'].map((item) {
-                return _LatestPostCard();
-              }).toList(),
-            ]),
-          ),
-          SizedBox(height: 55),
-          ListView(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
-            children: [
-              ...['1', '2', '3'].map((item) {
-                return _PostCard();
-              }).toList(),
-            ],
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
 
 class _LatestPostCard extends StatelessWidget {
+  final Article data;
+
   const _LatestPostCard({
     Key key,
+    this.data,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get.to(ArticleDetailScreen()),
+      onTap: () => Get.to(ArticleDetailScreen(
+        data: data,
+      )),
       child: Container(
         width: 225,
         margin: EdgeInsets.only(right: 25),
@@ -88,7 +107,7 @@ class _LatestPostCard extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: loadImage(
-                    'https://i2.wp.com/www.dara.co.id/wp-content/uploads/2019/07/URBAN..jpg?fit=900%2C489&ssl=1',
+                    data.picture,
                     isShowLoading: false,
                     height: 250,
                   ),
@@ -101,7 +120,7 @@ class _LatestPostCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: Text(
-                    'Hydroponics',
+                    data.category,
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 10,
@@ -116,7 +135,7 @@ class _LatestPostCard extends StatelessWidget {
             Container(
               width: double.maxFinite,
               child: Text(
-                'What is Urban Farming and is it Profitable?',
+                data.title,
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 16.5,
@@ -129,7 +148,7 @@ class _LatestPostCard extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              'beautifulhomes',
+              data.author,
               style: TextStyle(
                 fontFamily: 'Montserrat',
                 fontSize: 14,
@@ -145,14 +164,19 @@ class _LatestPostCard extends StatelessWidget {
 }
 
 class _PostCard extends StatelessWidget {
+  final Article data;
+
   const _PostCard({
     Key key,
+    this.data,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get.to(ArticleDetailScreen()),
+      onTap: () => Get.to(ArticleDetailScreen(
+        data: data,
+      )),
       child: Container(
         color: Colors.transparent,
         margin: EdgeInsets.only(bottom: 30),
@@ -166,7 +190,7 @@ class _PostCard extends StatelessWidget {
                 child: FittedBox(
                   fit: BoxFit.cover,
                   child: loadImage(
-                    'https://synthesishomes.id/wp-content/uploads/2020/07/SH-newsletteJunii20-web.jpg',
+                    data.picture,
                     isShowLoading: false,
                   ),
                 ),
@@ -188,7 +212,7 @@ class _PostCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Text(
-                      'Hydroponics',
+                      data.category,
                       style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 10,
@@ -201,7 +225,7 @@ class _PostCard extends StatelessWidget {
                   Container(
                     width: double.maxFinite,
                     child: Text(
-                      'Hydroponics makes it easy to become an urban farmer',
+                      data.title,
                       style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 16,
@@ -214,7 +238,7 @@ class _PostCard extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   Text(
-                    'beautifulhomes',
+                    data.author,
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 14,

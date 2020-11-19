@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'article_model.dart';
 import 'plant_model.dart';
 
 PlantDetail plantDetailFromJson(String str) =>
@@ -20,33 +21,6 @@ class PlantDetail {
         plant: Plant.fromJson(json["plant"]),
         article: Article.fromJson(json["article"]),
         statistic: Statistic.fromJson(json["statistic"]),
-      );
-}
-
-class Article {
-  Article({
-    this.title,
-    this.picture,
-    this.category,
-    this.author,
-    this.timestamp,
-    this.description,
-  });
-
-  String title;
-  String picture;
-  String category;
-  String author;
-  DateTime timestamp;
-  String description;
-
-  factory Article.fromJson(Map<String, dynamic> json) => Article(
-        title: json["title"],
-        picture: json["picture"],
-        category: json["category"],
-        author: json["author"],
-        timestamp: DateTime.parse(json["created_at"]),
-        description: json["description"],
       );
 }
 

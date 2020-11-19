@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
 import 'package:intl/intl.dart';
-import 'package:ufarming/models/plant_detail_model.dart';
+import 'package:ufarming/models/article_model.dart';
 import 'package:ufarming/utils/my_colors.dart';
 import 'package:ufarming/widgets/load_image.dart';
 import 'package:ufarming/widgets/my_app_bar.dart';
@@ -67,7 +67,7 @@ class ArticleDetailScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 15, 0, 0),
                   child: Text(
-                    '${data.author} • ${DateFormat('d MMMM yyyy').format(data.timestamp)}',
+                    '${data.author} • ${DateFormat('d MMMM yyyy').format(data.updatedAt)}',
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w500,
