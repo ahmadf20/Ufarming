@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+import 'package:ufarming/controllers/home_controller.dart';
+import 'package:ufarming/controllers/weather_controller.dart';
 import 'package:ufarming/screens/weather_screen.dart';
 import 'package:ufarming/utils/my_colors.dart';
+import 'package:ufarming/widgets/load_image.dart';
+import 'package:ufarming/widgets/loading_indicator.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key key}) : super(key: key);
+  HomeScreen({Key key}) : super(key: key);
+
+  final HomeController homeController = Get.put(HomeController());
+  final WeatherController weatherController = Get.put(WeatherController());
 
   @override
   Widget build(BuildContext context) {
@@ -71,64 +77,63 @@ class HomeScreen extends StatelessWidget {
                                         ),
                                       ),
                                       SizedBox(height: 5),
-                                      Text(
-                                        '${DateFormat('EEEE, dd MMM').format(DateTime.now())}',
-                                        style: TextStyle(
-                                          fontFamily: 'OpenSans',
-                                          fontSize: 14,
-                                          color: Colors.grey,
+                                      Obx(
+                                        () => Text(
+                                          homeController.address.value,
+                                          style: TextStyle(
+                                            fontFamily: 'OpenSans',
+                                            fontSize: 12,
+                                            color: Colors.grey,
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                                Column(
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Icon(
-                                          Icons.cloud_queue,
-                                          size: 40,
-                                          color: MyColors.darkGrey,
-                                        ),
-                                        SizedBox(width: 15),
-                                        Column(
+                                SizedBox(width: 10),
+                                Obx(() {
+                                  return weatherController.isLoading.value
+                                      ? loadingIndicator()
+                                      : Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
-                                            Text(
-                                              'Cloudy',
-                                              style: TextStyle(
-                                                fontFamily: 'Montserrat',
-                                                fontSize: 12,
-                                                color: Colors.grey,
-                                                fontWeight: FontWeight.w500,
-                                              ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Text(
+                                                  weatherController
+                                                      .weather
+                                                      .value
+                                                      .current
+                                                      .condition
+                                                      .text,
+                                                  style: TextStyle(
+                                                    fontFamily: 'Montserrat',
+                                                    fontSize: 12,
+                                                    color: Colors.grey,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                                SizedBox(height: 5),
+                                                Text(
+                                                  '${weatherController.weather.value.current.tempC.toString()}ºC',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Montserrat',
+                                                    fontSize: 18,
+                                                    color: MyColors.darkGrey,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            SizedBox(height: 5),
-                                            Text(
-                                              '28ºC',
-                                              style: TextStyle(
-                                                fontFamily: 'Montserrat',
-                                                fontSize: 18,
-                                                color: MyColors.darkGrey,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
+                                            SizedBox(width: 15),
+                                            loadImage(
+                                                'https:${weatherController.weather.value.current.condition.icon}'),
                                           ],
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      'Cimahi, Indonesia',
-                                      style: TextStyle(
-                                        fontFamily: 'OpenSans',
-                                        fontSize: 12,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ],
-                                )
+                                        );
+                                }),
                               ],
                             ),
                           ],
@@ -136,7 +141,6 @@ class HomeScreen extends StatelessWidget {
                       ),
                       Container(
                         height: 75,
-                        padding: EdgeInsets.only(left: 15, right: 0),
                         child: VerticalDivider(),
                       ),
                       Icon(

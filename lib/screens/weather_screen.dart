@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:ufarming/controllers/home_controller.dart';
+import 'package:ufarming/controllers/weather_controller.dart';
+import 'package:ufarming/models/weather_model.dart';
 import 'package:ufarming/utils/my_colors.dart';
+import 'package:ufarming/widgets/load_image.dart';
+import 'package:ufarming/widgets/loading_indicator.dart';
 import 'package:ufarming/widgets/my_app_bar.dart';
 
 class WeatherScreen extends StatelessWidget {
-  const WeatherScreen({Key key}) : super(key: key);
+  WeatherScreen({Key key}) : super(key: key);
+
+  final WeatherController controller = Get.find<WeatherController>();
+  final HomeController homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -15,162 +24,168 @@ class WeatherScreen extends StatelessWidget {
           title: 'Weather Forecast',
         ),
       ),
-      body: ListView(
-        padding: EdgeInsets.fromLTRB(25, 25, 25, 25),
-        children: [
-          Container(
-            padding: EdgeInsets.fromLTRB(30, 25, 30, 25),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(25),
-                  blurRadius: 35,
-                  offset: Offset(0, 3),
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Today',
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 25,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            '${DateFormat('EEEE, dd MMM').format(DateTime.now())}',
-                            style: TextStyle(
-                              fontFamily: 'OpenSans',
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
-                      ),
+      body: Obx(
+        () => controller.isLoading.value
+            ? loadingIndicator()
+            : ListView(
+                padding: EdgeInsets.fromLTRB(25, 25, 25, 25),
+                children: [
+                  Container(
+                    padding: EdgeInsets.fromLTRB(30, 25, 30, 25),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withAlpha(25),
+                          blurRadius: 35,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
                     ),
-                    Column(
+                    child: Column(
                       children: [
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Icon(
-                              Icons.cloud_queue,
-                              size: 40,
-                              color: MyColors.darkGrey,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Today',
+                                    style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    homeController.address.value,
+                                    style: TextStyle(
+                                      fontFamily: 'OpenSans',
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                            SizedBox(width: 15),
                             Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Text(
-                                  'Cloudy',
-                                  style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                SizedBox(height: 5),
-                                Text(
-                                  '28ºC',
-                                  style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 18,
-                                    color: MyColors.darkGrey,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          '${controller.weather.value.current.condition.text}',
+                                          style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            fontSize: 12,
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        SizedBox(height: 5),
+                                        Text(
+                                          '${controller.weather.value.current.tempC}ºC',
+                                          style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            fontSize: 18,
+                                            color: MyColors.darkGrey,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(width: 15),
+                                    loadImage(
+                                        'https:${controller.weather.value.current.condition.icon}'),
+                                  ],
                                 ),
                               ],
+                            )
+                          ],
+                        ),
+                        Divider(height: 35),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  buildWeatherInfo(
+                                    'Wind',
+                                    '${controller.weather.value.current.windMph} m/h',
+                                  ),
+                                  SizedBox(height: 10),
+                                  buildWeatherInfo(
+                                    'Visibility',
+                                    '${controller.weather.value.current.visKm} km',
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: 50),
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  buildWeatherInfo(
+                                    'Humidity',
+                                    '${controller.weather.value.current.humidity}%',
+                                  ),
+                                  SizedBox(height: 10),
+                                  buildWeatherInfo(
+                                    'UV',
+                                    '${controller.weather.value.current.uv}',
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 35),
                         Text(
-                          'Cimahi, Indonesia',
+                          'Next 3 Days',
                           style: TextStyle(
-                            fontFamily: 'OpenSans',
-                            fontSize: 12,
-                            color: Colors.grey,
+                            fontFamily: 'Montserrat',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: MyColors.darkGrey,
                           ),
                         ),
+                        SizedBox(height: 25),
+                        ...controller.weather.value.forecast.forecastday
+                            .map((item) => buildCard(item))
+                            .toList(),
                       ],
-                    )
-                  ],
-                ),
-                Divider(height: 35),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: [
-                          buildWeatherInfo('Wind', '12 m/h'),
-                          SizedBox(height: 10),
-                          buildWeatherInfo('Visibility', '25 km'),
-                        ],
-                      ),
                     ),
-                    SizedBox(width: 50),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          buildWeatherInfo('Humidity', '55%'),
-                          SizedBox(height: 10),
-                          buildWeatherInfo('UV', '13'),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 35),
-                Text(
-                  'Next 5 Days',
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: MyColors.darkGrey,
                   ),
-                ),
-                SizedBox(height: 25),
-                buildCard(),
-                buildCard(),
-                buildCard(),
-                buildCard(),
-              ],
-            ),
-          ),
-        ],
+                ],
+              ),
       ),
     );
   }
 
-  Container buildCard() {
+  Container buildCard(Forecastday item) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: EdgeInsets.only(bottom: 5),
       child: Row(
         children: [
-          Icon(
-            Icons.wb_sunny_outlined,
-            size: 35,
-            color: MyColors.darkGrey,
+          loadImage(
+            'https:${item.day.condition.icon}',
+            height: 55,
           ),
           SizedBox(width: 25),
           Expanded(
@@ -178,7 +193,7 @@ class WeatherScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Tuesday',
+                  '${DateFormat('EEEE').format(item.date)}',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 14,
@@ -188,10 +203,10 @@ class WeatherScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 5),
                 Text(
-                  '28ºC',
+                  '${item.day.avgtempC}ºC',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.w700,
                     color: MyColors.primary,
                   ),
@@ -212,7 +227,7 @@ class WeatherScreen extends StatelessWidget {
               ),
               SizedBox(height: 5),
               Text(
-                '46%',
+                '${item.day.dailyChanceOfRain}%',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 18,
@@ -236,7 +251,7 @@ class WeatherScreen extends StatelessWidget {
               ),
               SizedBox(height: 5),
               Text(
-                '74%',
+                '${item.day.avghumidity.toInt()}%',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 18,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ufarming/controllers/home_controller.dart';
 // import 'package:intl/intl.dart';
 import 'package:ufarming/controllers/profile_controller.dart';
 import 'package:ufarming/screens/auth_screen.dart';
@@ -13,13 +14,12 @@ import 'package:ufarming/widgets/my_app_bar.dart';
 import 'package:ufarming/widgets/my_outline_button.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key key}) : super(key: key);
+  ProfileScreen({Key key}) : super(key: key);
+
+  final HomeController homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
-    // print(DateFormat('EEEE, dd MMMM yyyy')
-    //     .format(DateTime.fromMillisecondsSinceEpoch(1605326400 * 1000)));
-
     return GetX<ProfileController>(
         init: ProfileController(),
         builder: (s) {
@@ -105,8 +105,10 @@ class ProfileScreen extends StatelessWidget {
                         buildSectionTitle('Settings'),
                         buildListTile(
                           'Set Location',
-                          s.address.value.isEmpty ? 'not set' : s.address.value,
-                          onTap: s.updateLocation,
+                          homeController.address.value.isEmpty
+                              ? 'not set'
+                              : homeController.address.value,
+                          onTap: homeController.updateLocation,
                         ),
                         buildListTile(
                           'Test Notification',
