@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ufarming/controllers/home_controller.dart';
 import 'package:ufarming/controllers/weather_controller.dart';
+import 'package:ufarming/models/myplant_model.dart';
 import 'package:ufarming/screens/weather_screen.dart';
 import 'package:ufarming/utils/my_colors.dart';
 import 'package:ufarming/widgets/load_image.dart';
 import 'package:ufarming/widgets/loading_indicator.dart';
+
+import 'plant/catalog_plant_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -16,142 +19,303 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
+      floatingActionButton: FloatingActionButton(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        backgroundColor: MyColors.primary,
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 25,
+        ),
+        onPressed: () => Get.to(CatalogPlantScreen()),
+      ),
+      body: ListView(
         padding: const EdgeInsets.fromLTRB(25, 60, 25, 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Home',
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                fontSize: 25,
-                fontWeight: FontWeight.w700,
-                color: Colors.black87,
-              ),
+        children: [
+          Text(
+            'Home',
+            style: TextStyle(
+              fontFamily: 'Montserrat',
+              fontSize: 25,
+              fontWeight: FontWeight.w700,
+              color: Colors.black87,
             ),
-            SizedBox(height: 5),
-            Text(
-              "The love of gardening is a seed once sown that never dies. — Gertrude Jekyll",
-              style: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: MyColors.grey,
-              ),
-            ),
-            SizedBox(height: 30),
-            GestureDetector(
-              onTap: () => Get.to(WeatherScreen()),
-              child: Container(
-                  padding: EdgeInsets.fromLTRB(30, 15, 10, 15),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withAlpha(25),
-                        blurRadius: 35,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
+          ),
+          // SizedBox(height: 5),
+          // Text(
+          //   "The love of gardening is a seed once sown that never dies. — Gertrude Jekyll",
+          //   style: TextStyle(
+          //     fontFamily: 'OpenSans',
+          //     fontSize: 14,
+          //     fontWeight: FontWeight.w600,
+          //     color: MyColors.grey,
+          //   ),
+          // ),
+          SizedBox(height: 30),
+          GestureDetector(
+            onTap: () => Get.to(WeatherScreen()),
+            child: Container(
+              padding: EdgeInsets.fromLTRB(30, 15, 10, 15),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(25),
+                    blurRadius: 35,
+                    offset: Offset(0, 3),
                   ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
+                ],
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Row(
                           children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Today',
-                                        style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                      SizedBox(height: 5),
-                                      Obx(
-                                        () => Text(
-                                          homeController.address.value,
-                                          style: TextStyle(
-                                            fontFamily: 'OpenSans',
-                                            fontSize: 12,
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Today',
+                                    style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
-                                ),
-                                SizedBox(width: 10),
-                                Obx(() {
-                                  return weatherController.isLoading.value
-                                      ? loadingIndicator()
-                                      : Row(
+                                  SizedBox(height: 5),
+                                  Obx(
+                                    () => Text(
+                                      homeController.address.value,
+                                      style: TextStyle(
+                                        fontFamily: 'OpenSans',
+                                        fontSize: 12,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Obx(() {
+                              return weatherController.isLoading.value
+                                  ? loadingIndicator()
+                                  : Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                              CrossAxisAlignment.end,
                                           children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                Text(
-                                                  weatherController
-                                                      .weather
-                                                      .value
-                                                      .current
-                                                      .condition
-                                                      .text,
-                                                  style: TextStyle(
-                                                    fontFamily: 'Montserrat',
-                                                    fontSize: 12,
-                                                    color: Colors.grey,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                                SizedBox(height: 5),
-                                                Text(
-                                                  '${weatherController.weather.value.current.tempC.toString()}ºC',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Montserrat',
-                                                    fontSize: 18,
-                                                    color: MyColors.darkGrey,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                              ],
+                                            Text(
+                                              weatherController.weather.value
+                                                  .current.condition.text,
+                                              style: TextStyle(
+                                                fontFamily: 'Montserrat',
+                                                fontSize: 12,
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
-                                            SizedBox(width: 15),
-                                            loadImage(
-                                                'https:${weatherController.weather.value.current.condition.icon}'),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              '${weatherController.weather.value.current.tempC.toString()}ºC',
+                                              style: TextStyle(
+                                                fontFamily: 'Montserrat',
+                                                fontSize: 18,
+                                                color: MyColors.darkGrey,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
                                           ],
-                                        );
-                                }),
-                              ],
+                                        ),
+                                        SizedBox(width: 15),
+                                        loadImage(
+                                            'https:${weatherController.weather.value.current.condition.icon}'),
+                                      ],
+                                    );
+                            }),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 75,
+                    child: VerticalDivider(),
+                  ),
+                  Icon(
+                    Icons.keyboard_arrow_right_rounded,
+                    color: Colors.grey,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 30),
+          Text(
+            'My Plants',
+            style: TextStyle(
+              fontFamily: 'Montserrat',
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: Colors.black54,
+            ),
+          ),
+          SizedBox(height: 5),
+          Text(
+            'Check how your crops are doing',
+            style: TextStyle(
+              fontFamily: 'OpenSans',
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: MyColors.grey,
+            ),
+          ),
+          Obx(
+            () => homeController.isLoading.value
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 75),
+                    child: loadingIndicator(),
+                  )
+                : ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: homeController.myPlants.length,
+                    itemBuilder: (context, index) {
+                      return _MyPlantCard(
+                        data: homeController.myPlants[index],
+                      );
+                    },
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MyPlantCard extends StatelessWidget {
+  final MyPlant data;
+
+  const _MyPlantCard({Key key, this.data}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 15),
+      padding: EdgeInsets.fromLTRB(22.5, 15, 10, 15),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(25),
+            blurRadius: 35,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                data.name,
+                                style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: MyColors.darkGrey,
+                                ),
+                              ),
+                              SizedBox(height: 3),
+                              Text(
+                                '${data.plantName} - ${data.finishTask}/${data.totalTask} Tasks',
+                                style: TextStyle(
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 12,
+                                  color: MyColors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 35,
+                          width: 35,
+                          child: VerticalDivider(
+                            color: MyColors.grey,
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Progress',
+                              style: TextStyle(
+                                fontFamily: 'OpenSans',
+                                fontSize: 10,
+                                color: MyColors.grey,
+                              ),
+                            ),
+                            SizedBox(height: 3),
+                            Text(
+                              '${data.progress}%',
+                              style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                                color: MyColors.darkGrey,
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                      Container(
-                        height: 75,
-                        child: VerticalDivider(),
-                      ),
-                      Icon(
-                        Icons.keyboard_arrow_right_rounded,
-                        color: Colors.grey,
-                      ),
-                    ],
-                  )),
-            ),
-          ],
-        ),
+                      ],
+                    ),
+                    Stack(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 15),
+                          height: 5,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        //TODO: progress bar
+                        // Container(
+                        //   margin: EdgeInsets.only(top: 15),
+                        //   height: 5,
+                        //   decoration: BoxDecoration(
+                        //     color: Colors.amber,
+                        //     borderRadius: BorderRadius.circular(10),
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 15),
+              loadImage(data.picture, height: 85),
+            ],
+          ),
+        ],
       ),
     );
   }

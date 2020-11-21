@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ufarming/controllers/catalog_controller.dart';
 import 'package:ufarming/models/plant_model.dart';
-import 'package:ufarming/screens/catalog_plant_detail_screen.dart';
+import 'package:ufarming/screens/plant/catalog_plant_detail_screen.dart';
 import 'package:ufarming/utils/my_colors.dart';
 import 'package:ufarming/utils/my_text_field.dart';
 import 'package:ufarming/widgets/load_image.dart';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ufarming/controllers/home_controller.dart';
-// import 'package:intl/intl.dart';
 import 'package:ufarming/controllers/profile_controller.dart';
 import 'package:ufarming/screens/auth_screen.dart';
 import 'package:ufarming/screens/profile/edit_profile_screen.dart';

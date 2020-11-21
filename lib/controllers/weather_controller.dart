@@ -1,4 +1,3 @@
-import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:ufarming/models/weather_model.dart';
 import 'package:ufarming/services/weather_service.dart';

@@ -1,3 +1,5 @@
+import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ufarming/models/plant_detail_model.dart';
 import 'package:ufarming/services/plant_service.dart';
@@ -8,6 +10,8 @@ class CatalogDetailController extends GetxController {
   final Rx<PlantDetail> plant = PlantDetail().obs;
   String id;
   RxBool isLoading = true.obs;
+
+  TextEditingController controller = TextEditingController();
 
   CatalogDetailController(this.id);
 
@@ -30,6 +34,22 @@ class CatalogDetailController extends GetxController {
       customBotToastText(ErrorMessage.general);
     } finally {
       isLoading.toggle();
+    }
+  }
+
+  void addMyPlantHandler() async {
+    try {
+      BotToast.showLoading();
+      await addMyPlant(id, controller.text).then((res) {
+        if (res == true) {
+          Get.back();
+          Get.back();
+        }
+      });
+    } catch (e) {
+      customBotToastText(ErrorMessage.general);
+    } finally {
+      BotToast.closeAllLoading();
     }
   }
 
