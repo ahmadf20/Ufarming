@@ -71,13 +71,12 @@ class WeatherScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Column(
+                            Expanded(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: [
@@ -89,6 +88,8 @@ class WeatherScreen extends StatelessWidget {
                                             color: Colors.grey,
                                             fontWeight: FontWeight.w500,
                                           ),
+                                          textAlign: TextAlign.end,
+                                          maxLines: 2,
                                         ),
                                         SizedBox(height: 5),
                                         Text(
@@ -102,12 +103,12 @@ class WeatherScreen extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(width: 15),
-                                    loadImage(
-                                        'https:${controller.weather.value.current.condition.icon}'),
-                                  ],
-                                ),
-                              ],
+                                  ),
+                                  SizedBox(width: 15),
+                                  loadImage(
+                                      'https:${controller.weather.value.current.condition.icon}'),
+                                ],
+                              ),
                             )
                           ],
                         ),

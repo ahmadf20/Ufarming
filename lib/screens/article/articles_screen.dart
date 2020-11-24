@@ -61,7 +61,7 @@ class ArticlesScreen extends StatelessWidget {
                             }).toList(),
                           ]),
                     ),
-                    SizedBox(height: 55),
+                    SizedBox(height: 20),
                     ListView(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
@@ -96,7 +96,7 @@ class _LatestPostCard extends StatelessWidget {
       )),
       child: Container(
         width: 225,
-        margin: EdgeInsets.only(right: 25),
+        margin: EdgeInsets.only(right: 25, bottom: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

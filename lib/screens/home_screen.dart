@@ -101,45 +101,55 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
                             SizedBox(width: 10),
-                            Obx(() {
-                              return weatherController.isLoading.value
-                                  ? loadingIndicator()
-                                  : Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Text(
-                                              weatherController.weather.value
-                                                  .current.condition.text,
-                                              style: TextStyle(
-                                                fontFamily: 'Montserrat',
-                                                fontSize: 12,
-                                                color: Colors.grey,
-                                                fontWeight: FontWeight.w500,
-                                              ),
+                            Expanded(
+                              child: Obx(() {
+                                return weatherController.isLoading.value
+                                    ? loadingIndicator()
+                                    : Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Text(
+                                                  weatherController
+                                                      .weather
+                                                      .value
+                                                      .current
+                                                      .condition
+                                                      .text,
+                                                  style: TextStyle(
+                                                    fontFamily: 'Montserrat',
+                                                    fontSize: 12,
+                                                    color: Colors.grey,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                  textAlign: TextAlign.end,
+                                                  maxLines: 2,
+                                                ),
+                                                SizedBox(height: 5),
+                                                Text(
+                                                  '${weatherController.weather.value.current.tempC.toString()}ºC',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Montserrat',
+                                                    fontSize: 18,
+                                                    color: MyColors.darkGrey,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            SizedBox(height: 5),
-                                            Text(
-                                              '${weatherController.weather.value.current.tempC.toString()}ºC',
-                                              style: TextStyle(
-                                                fontFamily: 'Montserrat',
-                                                fontSize: 18,
-                                                color: MyColors.darkGrey,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(width: 15),
-                                        loadImage(
-                                            'https:${weatherController.weather.value.current.condition.icon}'),
-                                      ],
-                                    );
-                            }),
+                                          ),
+                                          SizedBox(width: 15),
+                                          loadImage(
+                                              'https:${weatherController.weather.value.current.condition.icon}'),
+                                        ],
+                                      );
+                              }),
+                            ),
                           ],
                         ),
                       ],
@@ -177,6 +187,7 @@ class HomeScreen extends StatelessWidget {
               color: MyColors.grey,
             ),
           ),
+          SizedBox(height: 20),
           Obx(
             () => homeController.isLoading.value
                 ? Padding(
@@ -184,6 +195,7 @@ class HomeScreen extends StatelessWidget {
                     child: loadingIndicator(),
                   )
                 : ListView.builder(
+                    padding: EdgeInsets.only(bottom: 75),
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: homeController.myPlants.length,
