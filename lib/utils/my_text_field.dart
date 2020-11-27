@@ -7,7 +7,8 @@ class MyTextField extends StatelessWidget {
   final bool obscureText;
   final String errorText;
   final String hintText;
-  final Icon suffix;
+  final Widget suffix;
+  final Color fillColor;
   final Function(String) validator;
   final TextEditingController controller;
   final Function onChanged;
@@ -22,6 +23,7 @@ class MyTextField extends StatelessWidget {
     this.hintText,
     this.suffix,
     this.onChanged,
+    this.fillColor,
   }) : super(key: key);
 
   @override
@@ -29,7 +31,7 @@ class MyTextField extends StatelessWidget {
     return Container(
       padding: EdgeInsets.fromLTRB(15, 15, 15, 12.5),
       decoration: BoxDecoration(
-        color: Color(0xfff7f5f2),
+        color: fillColor ?? Color(0xfff7f5f2),
         border: Border.all(
           width: 1.00,
           color: Color(0xfff0f0f0),
@@ -54,7 +56,7 @@ class MyTextField extends StatelessWidget {
             height: 0.8,
           ),
           floatingLabelBehavior: FloatingLabelBehavior.always,
-          fillColor: Color(0xFFF7F5F2),
+          fillColor: fillColor ?? Color(0xFFF7F5F2),
           contentPadding: EdgeInsets.zero,
           border: InputBorder.none,
           suffix: suffix,

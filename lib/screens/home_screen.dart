@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ufarming/controllers/home_controller.dart';
 import 'package:ufarming/controllers/weather_controller.dart';
 import 'package:ufarming/models/myplant_model.dart';
+import 'package:ufarming/screens/plant/myplant_detail_screen.dart';
 import 'package:ufarming/screens/weather_screen.dart';
 import 'package:ufarming/utils/my_colors.dart';
 import 'package:ufarming/widgets/load_image.dart';
@@ -219,115 +220,121 @@ class _MyPlantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 15),
-      padding: EdgeInsets.fromLTRB(22.5, 15, 10, 15),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(25),
-            blurRadius: 35,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Column(
+    return GestureDetector(
+      onTap: () => Get.to(MyPlantDetailScreen(
+        id: '9dfaae2f-465b-4f0b-aee6-6dc901ade7b4',
+        // id: data.id, //TODO: make it dynamic
+      )),
+      child: Container(
+        margin: EdgeInsets.only(bottom: 15),
+        padding: EdgeInsets.fromLTRB(22.5, 15, 10, 15),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(25),
+              blurRadius: 35,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  data.name,
+                                  style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    color: MyColors.darkGrey,
+                                  ),
+                                ),
+                                SizedBox(height: 3),
+                                Text(
+                                  '${data.plantName} - ${data.finishTask}/${data.totalTask} Tasks',
+                                  style: TextStyle(
+                                    fontFamily: 'OpenSans',
+                                    fontSize: 12,
+                                    color: MyColors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            height: 35,
+                            width: 35,
+                            child: VerticalDivider(
+                              color: MyColors.grey,
+                            ),
+                          ),
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                data.name,
+                                'Progress',
                                 style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: MyColors.darkGrey,
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 10,
+                                  color: MyColors.grey,
                                 ),
                               ),
                               SizedBox(height: 3),
                               Text(
-                                '${data.plantName} - ${data.finishTask}/${data.totalTask} Tasks',
+                                '${data.progress}%',
                                 style: TextStyle(
-                                  fontFamily: 'OpenSans',
-                                  fontSize: 12,
-                                  color: MyColors.grey,
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  color: MyColors.darkGrey,
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        Container(
-                          height: 35,
-                          width: 35,
-                          child: VerticalDivider(
-                            color: MyColors.grey,
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Progress',
-                              style: TextStyle(
-                                fontFamily: 'OpenSans',
-                                fontSize: 10,
-                                color: MyColors.grey,
-                              ),
+                        ],
+                      ),
+                      Stack(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: 15),
+                            height: 5,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            SizedBox(height: 3),
-                            Text(
-                              '${data.progress}%',
-                              style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                                color: MyColors.darkGrey,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Stack(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(top: 15),
-                          height: 5,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(10),
                           ),
-                        ),
-                        //TODO: progress bar
-                        // Container(
-                        //   margin: EdgeInsets.only(top: 15),
-                        //   height: 5,
-                        //   decoration: BoxDecoration(
-                        //     color: Colors.amber,
-                        //     borderRadius: BorderRadius.circular(10),
-                        //   ),
-                        // ),
-                      ],
-                    ),
-                  ],
+                          //TODO: progress bar
+                          // Container(
+                          //   margin: EdgeInsets.only(top: 15),
+                          //   height: 5,
+                          //   decoration: BoxDecoration(
+                          //     color: Colors.amber,
+                          //     borderRadius: BorderRadius.circular(10),
+                          //   ),
+                          // ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(width: 15),
-              loadImage(data.picture, height: 85),
-            ],
-          ),
-        ],
+                SizedBox(width: 15),
+                loadImage(data.picture, height: 85),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
