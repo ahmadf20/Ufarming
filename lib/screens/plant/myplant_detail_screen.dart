@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import 'package:ufarming/controllers/myplant_detail_controller.dart';
+import 'package:ufarming/models/activity_model.dart';
+import 'package:ufarming/models/checklist_model.dart';
+import 'package:ufarming/models/myplant_model.dart';
 import 'package:ufarming/screens/article/article_detail_screen.dart';
 import 'package:ufarming/screens/plant/plant_information_screen.dart';
 import 'package:ufarming/utils/my_colors.dart';
@@ -9,16 +13,18 @@ import 'package:ufarming/widgets/load_image.dart';
 import 'package:ufarming/widgets/loading_indicator.dart';
 import 'package:ufarming/widgets/my_app_bar.dart';
 import 'package:ufarming/widgets/my_card.dart';
+import 'package:ufarming/widgets/my_flat_button.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class MyPlantDetailScreen extends StatelessWidget {
-  final String id;
+  final MyPlant data;
 
-  MyPlantDetailScreen({Key key, @required this.id}) : super(key: key);
+  MyPlantDetailScreen({Key key, @required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GetX<MyPlantDetailController>(
-      init: MyPlantDetailController(id),
+      init: MyPlantDetailController(data.id, data.idPlant),
       builder: (s) {
         return Scaffold(
           appBar: PreferredSize(
@@ -37,7 +43,7 @@ class MyPlantDetailScreen extends StatelessWidget {
                         Positioned(
                           right: 0,
                           child: loadImage(
-                            s.plant.value.plant.picture,
+                            data.picture,
                             alignment: Alignment.centerRight,
                             height: 175,
                           ),
@@ -47,50 +53,92 @@ class MyPlantDetailScreen extends StatelessWidget {
                           height: 180,
                           margin: EdgeInsets.only(bottom: 25),
                           alignment: Alignment.bottomLeft,
-                          child: Text(
-                            s.plant.value.plant.plantName,
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 32,
-                              fontWeight: FontWeight.w700,
-                            ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                data.name,
+                                style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                data.plantName,
+                                style: TextStyle(
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 16,
+                                  color: MyColors.grey,
+                                ),
+                              ),
+                              SizedBox(height: 25),
+                              Container(
+                                width: 150,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Progress',
+                                      style: TextStyle(
+                                        fontFamily: 'OpenSans',
+                                        fontSize: 10,
+                                        color: MyColors.grey,
+                                      ),
+                                    ),
+                                    Text(
+                                      '${data.progress}%',
+                                      style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w700,
+                                        color: MyColors.darkGrey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              LinearPercentIndicator(
+                                padding: EdgeInsets.symmetric(horizontal: 5),
+                                width: 150,
+                                lineHeight: 5,
+                                percent: double.parse(data.progress) / 100,
+                                progressColor: MyColors.gold,
+                                backgroundColor: MyColors.lightGrey,
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 25),
-                    buildLabel(
-                      s.plant.value.plant.difficulty,
-                      Icons.poll_outlined,
-                    ),
-                    SizedBox(height: 10),
-                    Wrap(
-                      spacing: 15,
-                      children: [
-                        buildLabel(
-                          s.plant.value.plant.categoryName,
-                          Icons.spa_outlined,
-                        ),
-                        buildLabel(
-                          s.plant.value.plant.typeName,
-                          Icons.eco_outlined,
-                        )
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Wrap(
-                      spacing: 15,
-                      children: [
-                        buildStatistic(s.plant.value.plant.stages, 'Stages'),
-                        buildStatistic(
-                          s.plant.value.plant.totalDays,
-                          'Total Days',
-                        ),
-                        buildStatistic(
-                          '${double.parse(s.plant.value.plant.successRate).toInt()}%',
-                          'Success Rate',
-                        ),
-                      ],
+                    SizedBox(height: 50),
+                    Container(
+                      width: Get.width,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: MyFlatButton(
+                              text: 'Stop',
+                              color: MyColors.lightGrey,
+                              textColor: MyColors.darkGrey,
+                              onPressed: () {
+                                s.delMyPlant(data.id);
+                              },
+                            ),
+                          ),
+                          SizedBox(width: 15),
+                          Expanded(
+                            child: MyFlatButton(
+                              text: 'Finish',
+                              onPressed: () {},
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(height: 25),
                     Divider(
@@ -113,57 +161,63 @@ class MyPlantDetailScreen extends StatelessWidget {
                       title: 'Checklist',
                       showDivider: true,
                       showIcon: false,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: 3,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 20),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                      child: s.isLoadingChecklist.value
+                          ? loadingIndicator()
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: s.checkList.length,
+                              itemBuilder: (context, index) {
+                                CheckList item = s.checkList[index];
+
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 20),
+                                  child: Row(
                                     children: [
-                                      Text(
-                                        'Add Nutrition',
-                                        style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          color: MyColors.darkGrey,
+                                      Expanded(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              item.title,
+                                              style: TextStyle(
+                                                fontFamily: 'Montserrat',
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600,
+                                                color: MyColors.darkGrey,
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              item.desc,
+                                              style: TextStyle(
+                                                fontFamily: 'OpenSans',
+                                                fontSize: 12,
+                                                color: MyColors.grey,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      SizedBox(height: 5),
-                                      Text(
-                                        'Add 20gr nutrition to the water to make the plant grow faster.',
-                                        style: TextStyle(
-                                          fontFamily: 'OpenSans',
-                                          fontSize: 12,
-                                          color: MyColors.grey,
+                                      IconButton(
+                                        splashColor: MyColors.grey,
+                                        icon: Image.asset(
+                                          item.isChecked
+                                              ? 'assets/icons/check_true.png'
+                                              : 'assets/icons/check_false.png',
+                                          width: 20,
                                         ),
+                                        onPressed: () {
+                                          s.checkAction(item.id);
+                                        },
                                       ),
                                     ],
                                   ),
-                                ),
-                                IconButton(
-                                  splashColor: MyColors.grey,
-                                  icon: Image.asset(
-                                    'assets/icons/check_false.png',
-                                    width: 20,
-                                  ),
-                                  onPressed: () {
-                                    print('Tapped');
-                                  },
-                                ),
-                              ],
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
                     ),
                     MyCard(
                       title: 'Activity',
@@ -182,7 +236,10 @@ class MyPlantDetailScreen extends StatelessWidget {
                                   color: MyColors.grey,
                                   size: 17.5,
                                 ),
-                                onTap: () {},
+                                onTap: () {
+                                  if (s.controller.text.isNotEmpty)
+                                    s.postActivity(data.id);
+                                },
                               ),
                             ),
                           ),
@@ -190,8 +247,10 @@ class MyPlantDetailScreen extends StatelessWidget {
                             shrinkWrap: true,
                             padding: EdgeInsets.only(top: 25, left: 2.5),
                             physics: NeverScrollableScrollPhysics(),
-                            itemCount: 3,
+                            itemCount: s.activities.length,
                             itemBuilder: (context, index) {
+                              final Activity item = s.activities[index];
+
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 0),
                                 child: Row(
@@ -203,7 +262,7 @@ class MyPlantDetailScreen extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Add extra nutrition',
+                                            item.title,
                                             style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               fontSize: 14,
@@ -213,7 +272,8 @@ class MyPlantDetailScreen extends StatelessWidget {
                                           ),
                                           SizedBox(height: 5),
                                           Text(
-                                            '1 Hours ago',
+                                            timeago.format(item?.createdAt ??
+                                                DateTime.now()),
                                             style: TextStyle(
                                               fontFamily: 'OpenSans',
                                               fontSize: 10,
@@ -231,7 +291,7 @@ class MyPlantDetailScreen extends StatelessWidget {
                                         size: 20,
                                       ),
                                       onPressed: () {
-                                        print('Tapped');
+                                        s.delActivity(item.id);
                                       },
                                     ),
                                   ],

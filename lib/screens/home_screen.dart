@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import 'package:ufarming/controllers/home_controller.dart';
 import 'package:ufarming/controllers/weather_controller.dart';
 import 'package:ufarming/models/myplant_model.dart';
@@ -222,8 +223,7 @@ class _MyPlantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => Get.to(MyPlantDetailScreen(
-        id: '9dfaae2f-465b-4f0b-aee6-6dc901ade7b4',
-        // id: data.id, //TODO: make it dynamic
+        data: data,
       )),
       child: Container(
         margin: EdgeInsets.only(bottom: 15),
@@ -305,26 +305,13 @@ class _MyPlantCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Stack(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(top: 15),
-                            height: 5,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          //TODO: progress bar
-                          // Container(
-                          //   margin: EdgeInsets.only(top: 15),
-                          //   height: 5,
-                          //   decoration: BoxDecoration(
-                          //     color: Colors.amber,
-                          //     borderRadius: BorderRadius.circular(10),
-                          //   ),
-                          // ),
-                        ],
+                      SizedBox(height: 15),
+                      LinearPercentIndicator(
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        lineHeight: 5,
+                        percent: double.parse(data.progress) / 100,
+                        progressColor: MyColors.gold,
+                        backgroundColor: MyColors.lightGrey,
                       ),
                     ],
                   ),

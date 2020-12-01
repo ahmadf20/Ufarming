@@ -6,34 +6,33 @@ List<MyPlant> myPlantFromJson(String str) =>
 class MyPlant {
   MyPlant({
     this.id,
+    this.idPlant,
     this.name,
     this.plantName,
     this.progress,
     this.picture,
     this.finishTask,
     this.totalTask,
-    this.listTask,
   });
 
   String id;
+  String idPlant;
   String name;
   String plantName;
   String progress;
   String picture;
   int finishTask;
   int totalTask;
-  List<ListTask> listTask;
 
   factory MyPlant.fromJson(Map<String, dynamic> json) => MyPlant(
         id: json["id"],
+        idPlant: json["id_plant"],
         name: json["name"],
         plantName: json["plant_name"],
         progress: json["progress"],
         picture: json["picture"],
         finishTask: json["finish_task"],
         totalTask: json["total_task"],
-        listTask: List<ListTask>.from(
-            json["list_task"].map((x) => ListTask.fromJson(x))),
       );
 }
 

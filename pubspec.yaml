@@ -23,31 +23,23 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.0
-  
-  get: ^3.15.0
-  image_picker: ^0.6.7+12
-
-  #required for flutter local notification
-  flutter_local_notifications: ^3.0.1+2
-  path_provider: ^1.6.24
-  rxdart: ^0.24.1
-
-  geolocator: ^6.1.5
-  geocoding: ^1.0.5
-
-  shared_preferences: ^0.5.12+4
-  dio: ^3.0.10
-  logger: ^0.9.4
-
   bot_toast: ^3.0.5
   cached_network_image: ^2.3.3
-
-  intl: ^0.16.1
+  cupertino_icons: ^1.0.0
+  dio: ^3.0.10
   flutter_html: ^1.0.2
+  flutter_local_notifications: ^3.0.1+2
+  geocoding: ^1.0.5
+  geolocator: ^6.1.5
+  get: ^3.15.0
+  image_picker: ^0.6.7+12
+  intl: ^0.16.1
+  logger: ^0.9.4
+  path_provider: ^1.6.24
+  percent_indicator: ^2.1.8
+  rxdart: ^0.24.1
+  shared_preferences: ^0.5.12+4
+  timeago: ^2.0.28
 
 dev_dependencies:
   flutter_test:
@@ -65,10 +57,9 @@ flutter_icons:
 
 # To update the splashscreen run: `flutter pub run flutter_native_splash:create`
 flutter_native_splash:
-    image: "assets/images/splash.png"
-    color: "#FAF8F5"
-    android_disable_fullscreen: true
-
+  image: "assets/images/splash.png"
+  color: "#FAF8F5"
+  android_disable_fullscreen: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

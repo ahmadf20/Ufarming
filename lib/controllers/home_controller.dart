@@ -10,7 +10,7 @@ import 'package:ufarming/utils/logger.dart';
 import 'package:ufarming/utils/shared_preferences.dart';
 
 class HomeController extends GetxController {
-  final RxList myPlants = <MyPlant>[].obs;
+  final RxList<MyPlant> myPlants = <MyPlant>[].obs;
 
   RxString address = ''.obs;
   RxDouble lat = 0.0.obs;
@@ -61,6 +61,12 @@ class HomeController extends GetxController {
     } finally {
       if (isLoading.value) isLoading.toggle();
     }
+  }
+
+  void updateFinishTask(String id, int count) {
+    MyPlant temp = myPlants[myPlants.indexWhere((v) => v.id == id)]
+      ..finishTask = count;
+    myPlants[myPlants.indexWhere((v) => v.id == id)] = temp;
   }
 
   @override

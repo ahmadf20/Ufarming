@@ -5,11 +5,15 @@ class MyFlatButton extends StatelessWidget {
   @required
   final String text;
   final Function onPressed;
+  final Color color;
+  final Color textColor;
 
   const MyFlatButton({
     Key key,
     @required this.text,
     this.onPressed,
+    this.color,
+    this.textColor,
   }) : super(key: key);
 
   @override
@@ -19,7 +23,7 @@ class MyFlatButton extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: FlatButton(
         onPressed: onPressed,
-        color: MyColors.primary,
+        color: color ?? MyColors.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
         ),
@@ -29,7 +33,7 @@ class MyFlatButton extends StatelessWidget {
             fontFamily: "Montserrat",
             fontWeight: FontWeight.w700,
             fontSize: 16,
-            color: MyColors.white,
+            color: textColor ?? MyColors.white,
           ),
         ),
       ),

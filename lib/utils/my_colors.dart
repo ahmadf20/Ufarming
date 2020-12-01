@@ -7,5 +7,6 @@ class MyColors {
   static const Color lightGrey = Color(0xffD0D0D0);
   static const Color white = Colors.white;
   static const Color canvas = Color(0xFFFAF8F5);
+  static const Color gold = Color(0xFFFBCE5D);
   static const Color transparent = Colors.transparent;
 }
