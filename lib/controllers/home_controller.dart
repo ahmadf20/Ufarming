@@ -51,7 +51,11 @@ class HomeController extends GetxController {
     try {
       await getMyPlants().then((res) {
         if (res is List<MyPlant>) {
-          myPlants.addAll(res);
+          List<MyPlant> sortedRes = res;
+          sortedRes
+              .sort((a, b) => (a.isDone ? 1 : 0).compareTo(b.isDone ? 1 : 0));
+          myPlants.clear();
+          myPlants.addAll(sortedRes);
         } else {
           customBotToastText(res);
         }
@@ -67,6 +71,10 @@ class HomeController extends GetxController {
     MyPlant temp = myPlants[myPlants.indexWhere((v) => v.id == id)]
       ..finishTask = count;
     myPlants[myPlants.indexWhere((v) => v.id == id)] = temp;
+  }
+
+  void updatePlantData(String id, MyPlant data) {
+    myPlants[myPlants.indexWhere((v) => v.id == id)] = data;
   }
 
   @override

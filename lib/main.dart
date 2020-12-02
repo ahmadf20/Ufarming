@@ -61,6 +61,10 @@ Future<void> main() async {
     selectNotificationSubject.add(payload);
   });
   runApp(MyApp());
+
+  //!TODO:
+  //![ ] Add Daily Notif
+  //![ ] Post activity default daily
 }
 
 Future<void> _configureLocalTimeZone() async {

@@ -28,7 +28,7 @@ class User {
         username: json["username"],
         name: json["name"],
         location: json["location"],
-        activePlant: json["active_plant"],
+        activePlant: json["active_plant"].toString(),
         profilePicture: json["profile_picture"],
         email: json["email"],
       );

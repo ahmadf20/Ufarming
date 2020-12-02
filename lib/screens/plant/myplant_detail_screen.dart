@@ -115,31 +115,35 @@ class MyPlantDetailScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 50),
-                    Container(
-                      width: Get.width,
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: MyFlatButton(
-                              text: 'Stop',
-                              color: MyColors.lightGrey,
-                              textColor: MyColors.darkGrey,
-                              onPressed: () {
-                                s.delMyPlant(data.id);
-                              },
+                    if (!data.isDone) SizedBox(height: 50),
+                    if (!data.isDone)
+                      Container(
+                        width: Get.width,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: MyFlatButton(
+                                text: 'Stop',
+                                color: MyColors.lightGrey,
+                                textColor: MyColors.darkGrey,
+                                onPressed: () {
+                                  s.delMyPlant();
+                                },
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 15),
-                          Expanded(
-                            child: MyFlatButton(
-                              text: 'Finish',
-                              onPressed: () {},
+                            SizedBox(width: 15),
+                            Expanded(
+                              child: MyFlatButton(
+                                text: 'Finish',
+                                onPressed: () {
+                                  s.finishGrowingHandler();
+                                  Get.back();
+                                },
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
                     SizedBox(height: 25),
                     Divider(
                       color: Colors.grey[400],
@@ -157,21 +161,104 @@ class MyPlantDetailScreen extends StatelessWidget {
                       onTap: () =>
                           Get.to(PlantInformationScreen(data: s.plant.value)),
                     ),
-                    MyCard(
-                      title: 'Checklist',
-                      showDivider: true,
-                      showIcon: false,
-                      child: s.isLoadingChecklist.value
-                          ? loadingIndicator()
-                          : ListView.builder(
+                    if (!data.isDone)
+                      MyCard(
+                        title: 'Checklist',
+                        showDivider: true,
+                        showIcon: false,
+                        child: s.isLoadingChecklist.value
+                            ? loadingIndicator()
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: s.checkList.length,
+                                itemBuilder: (context, index) {
+                                  CheckList item = s.checkList[index];
+
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 20),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                item.title,
+                                                style: TextStyle(
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: MyColors.darkGrey,
+                                                ),
+                                              ),
+                                              SizedBox(height: 5),
+                                              Text(
+                                                item.desc,
+                                                style: TextStyle(
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 12,
+                                                  color: MyColors.grey,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        IconButton(
+                                          splashColor: MyColors.grey,
+                                          icon: Image.asset(
+                                            item.isChecked
+                                                ? 'assets/icons/check_true.png'
+                                                : 'assets/icons/check_false.png',
+                                            width: 20,
+                                          ),
+                                          onPressed: () {
+                                            s.checkAction(item.id);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                      ),
+                    if (!data.isDone)
+                      MyCard(
+                        title: 'Activity',
+                        showDivider: true,
+                        showIcon: false,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: MyTextField(
+                                hintText: 'Add your activity...',
+                                controller: s.controller,
+                                suffix: GestureDetector(
+                                  child: Icon(
+                                    Icons.send_outlined,
+                                    color: MyColors.grey,
+                                    size: 17.5,
+                                  ),
+                                  onTap: () {
+                                    if (s.controller.text.isNotEmpty)
+                                      s.postActivity(data.id);
+                                  },
+                                ),
+                              ),
+                            ),
+                            ListView.builder(
                               shrinkWrap: true,
+                              padding: EdgeInsets.only(top: 25, left: 2.5),
                               physics: NeverScrollableScrollPhysics(),
-                              itemCount: s.checkList.length,
+                              itemCount: s.activities.length,
                               itemBuilder: (context, index) {
-                                CheckList item = s.checkList[index];
+                                final Activity item = s.activities[index];
 
                                 return Padding(
-                                  padding: const EdgeInsets.only(bottom: 20),
+                                  padding: const EdgeInsets.only(bottom: 0),
                                   child: Row(
                                     children: [
                                       Expanded(
@@ -191,10 +278,11 @@ class MyPlantDetailScreen extends StatelessWidget {
                                             ),
                                             SizedBox(height: 5),
                                             Text(
-                                              item.desc,
+                                              timeago.format(item?.createdAt ??
+                                                  DateTime.now()),
                                               style: TextStyle(
                                                 fontFamily: 'OpenSans',
-                                                fontSize: 12,
+                                                fontSize: 10,
                                                 color: MyColors.grey,
                                               ),
                                             ),
@@ -203,14 +291,13 @@ class MyPlantDetailScreen extends StatelessWidget {
                                       ),
                                       IconButton(
                                         splashColor: MyColors.grey,
-                                        icon: Image.asset(
-                                          item.isChecked
-                                              ? 'assets/icons/check_true.png'
-                                              : 'assets/icons/check_false.png',
-                                          width: 20,
+                                        icon: Icon(
+                                          Icons.cancel_outlined,
+                                          color: MyColors.grey,
+                                          size: 20,
                                         ),
                                         onPressed: () {
-                                          s.checkAction(item.id);
+                                          s.delActivity(item.id);
                                         },
                                       ),
                                     ],
@@ -218,90 +305,9 @@ class MyPlantDetailScreen extends StatelessWidget {
                                 );
                               },
                             ),
-                    ),
-                    MyCard(
-                      title: 'Activity',
-                      showDivider: true,
-                      showIcon: false,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: MyTextField(
-                              hintText: 'Add your activity...',
-                              controller: s.controller,
-                              suffix: GestureDetector(
-                                child: Icon(
-                                  Icons.send_outlined,
-                                  color: MyColors.grey,
-                                  size: 17.5,
-                                ),
-                                onTap: () {
-                                  if (s.controller.text.isNotEmpty)
-                                    s.postActivity(data.id);
-                                },
-                              ),
-                            ),
-                          ),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            padding: EdgeInsets.only(top: 25, left: 2.5),
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: s.activities.length,
-                            itemBuilder: (context, index) {
-                              final Activity item = s.activities[index];
-
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 0),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            item.title,
-                                            style: TextStyle(
-                                              fontFamily: 'Montserrat',
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600,
-                                              color: MyColors.darkGrey,
-                                            ),
-                                          ),
-                                          SizedBox(height: 5),
-                                          Text(
-                                            timeago.format(item?.createdAt ??
-                                                DateTime.now()),
-                                            style: TextStyle(
-                                              fontFamily: 'OpenSans',
-                                              fontSize: 10,
-                                              color: MyColors.grey,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    IconButton(
-                                      splashColor: MyColors.grey,
-                                      icon: Icon(
-                                        Icons.cancel_outlined,
-                                        color: MyColors.grey,
-                                        size: 20,
-                                      ),
-                                      onPressed: () {
-                                        s.delActivity(item.id);
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
                   ],
                 ),
         );

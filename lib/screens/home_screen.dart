@@ -103,55 +103,58 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
                             SizedBox(width: 10),
-                            Expanded(
-                              child: Obx(() {
-                                return weatherController.isLoading.value
-                                    ? loadingIndicator()
-                                    : Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                Text(
-                                                  weatherController
-                                                      .weather
-                                                      .value
-                                                      .current
-                                                      .condition
-                                                      .text,
-                                                  style: TextStyle(
-                                                    fontFamily: 'Montserrat',
-                                                    fontSize: 12,
-                                                    color: Colors.grey,
-                                                    fontWeight: FontWeight.w500,
+                            if (weatherController.weather != null)
+                              Expanded(
+                                child: Obx(() {
+                                  return weatherController.isLoading.value
+                                      ? loadingIndicator()
+                                      : Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                    weatherController
+                                                        .weather
+                                                        .value
+                                                        .current
+                                                        .condition
+                                                        .text,
+                                                    style: TextStyle(
+                                                      fontFamily: 'Montserrat',
+                                                      fontSize: 12,
+                                                      color: Colors.grey,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                    textAlign: TextAlign.end,
+                                                    maxLines: 2,
                                                   ),
-                                                  textAlign: TextAlign.end,
-                                                  maxLines: 2,
-                                                ),
-                                                SizedBox(height: 5),
-                                                Text(
-                                                  '${weatherController.weather.value.current.tempC.toString()}ºC',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Montserrat',
-                                                    fontSize: 18,
-                                                    color: MyColors.darkGrey,
-                                                    fontWeight: FontWeight.w700,
+                                                  SizedBox(height: 5),
+                                                  Text(
+                                                    '${weatherController.weather.value.current.tempC.toString()}ºC',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Montserrat',
+                                                      fontSize: 18,
+                                                      color: MyColors.darkGrey,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          SizedBox(width: 15),
-                                          loadImage(
-                                              'https:${weatherController.weather.value.current.condition.icon}'),
-                                        ],
-                                      );
-                              }),
-                            ),
+                                            SizedBox(width: 15),
+                                            loadImage(
+                                                'https:${weatherController.weather.value.current.condition.icon}'),
+                                          ],
+                                        );
+                                }),
+                              ),
                           ],
                         ),
                       ],
@@ -263,7 +266,10 @@ class _MyPlantCard extends StatelessWidget {
                                 ),
                                 SizedBox(height: 3),
                                 Text(
-                                  '${data.plantName} - ${data.finishTask}/${data.totalTask} Tasks',
+                                  '${data.plantName} - ' +
+                                      (data.isDone
+                                          ? 'Finish'
+                                          : '${data.finishTask}/${data.totalTask} Tasks'),
                                   style: TextStyle(
                                     fontFamily: 'OpenSans',
                                     fontSize: 12,

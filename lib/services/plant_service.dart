@@ -87,7 +87,7 @@ Future addMyPlant(String id, String name) async {
     logger.v(responseJson);
 
     if (res.data['status'] == 201) {
-      return true;
+      return MyPlant.fromJson(res.data['data']);
     } else {
       return 'Failed to fetch data';
     }
@@ -261,6 +261,39 @@ Future postPlantActivity(String id, String title) async {
   }
 }
 
+Future postDefaultChecklist(String id) async {
+  try {
+    Response res = await Dio().post('$url/checklist/default',
+        queryParameters: {
+          "id_myplant": id,
+        },
+        options: Options(
+          headers: await getHeader(),
+          responseType: ResponseType.json,
+        ));
+
+    String responseJson = json.encode(res.data['data']);
+
+    logger.v(responseJson);
+
+    if (res.data['data'] != null) {
+      return activityFromJson(responseJson);
+    } else {
+      return 'Failed to fetch data';
+    }
+  } on DioError catch (e) {
+    logger.e(e);
+    if (e.response != null) {
+      return e.response.data;
+    } else {
+      return ErrorMessage.connection;
+    }
+  } catch (e) {
+    logger.e(e);
+    return ErrorMessage.general;
+  }
+}
+
 Future deleteActivity(String id) async {
   try {
     Response res = await Dio().delete('$url/activity/$id',
@@ -305,6 +338,36 @@ Future deleteMyPlant(String id) async {
 
     if (res.data['data'] != null) {
       return true;
+    } else {
+      return 'Failed to fetch data';
+    }
+  } on DioError catch (e) {
+    logger.e(e);
+    if (e.response != null) {
+      return e.response.data;
+    } else {
+      return ErrorMessage.connection;
+    }
+  } catch (e) {
+    logger.e(e);
+    return ErrorMessage.general;
+  }
+}
+
+Future finishGrowing(String id) async {
+  try {
+    Response res = await Dio().post('$url/my_plant/$id',
+        options: Options(
+          headers: await getHeader(),
+          responseType: ResponseType.json,
+        ));
+
+    String responseJson = json.encode(res.data['data']);
+
+    logger.v(responseJson);
+
+    if (res.data['data'] != null) {
+      return MyPlant.fromJson(res.data['data']);
     } else {
       return 'Failed to fetch data';
     }

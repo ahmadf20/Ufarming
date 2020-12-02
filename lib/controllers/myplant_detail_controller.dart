@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ufarming/models/activity_model.dart';
 import 'package:ufarming/models/checklist_model.dart';
+import 'package:ufarming/models/myplant_model.dart';
 import 'package:ufarming/models/plant_detail_model.dart';
 import 'package:ufarming/services/plant_service.dart';
 import 'package:ufarming/utils/const.dart';
@@ -135,7 +136,7 @@ class MyPlantDetailController extends GetxController {
     }
   }
 
-  void delMyPlant(String id) async {
+  void delMyPlant() async {
     BotToast.showLoading();
     try {
       await deleteMyPlant(id).then((res) {
@@ -169,14 +170,18 @@ class MyPlantDetailController extends GetxController {
     }
   }
 
-  void addActivityHandler() async {
+  void finishGrowingHandler() async {
     try {
       BotToast.showLoading();
-      // await addMyPlant(id, controller.text).then((res) {
-      //   if (res == true) {
-
-      //   }
-      // });
+      await finishGrowing(id).then((res) {
+        if (res is MyPlant) {
+          var myPlants = Get.find<HomeController>().myPlants;
+          MyPlant temp = myPlants[myPlants.indexWhere((v) => v.id == id)]
+            ..isDone = res.isDone
+            ..progress = res.progress;
+          Get.find<HomeController>().updatePlantData(this.id, temp);
+        }
+      });
     } catch (e) {
       customBotToastText(ErrorMessage.general);
     } finally {

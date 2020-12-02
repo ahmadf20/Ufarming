@@ -13,6 +13,7 @@ class MyPlant {
     this.picture,
     this.finishTask,
     this.totalTask,
+    this.isDone,
   });
 
   String id;
@@ -20,6 +21,8 @@ class MyPlant {
   String name;
   String plantName;
   String progress;
+
+  bool isDone;
   String picture;
   int finishTask;
   int totalTask;
@@ -29,7 +32,12 @@ class MyPlant {
         idPlant: json["id_plant"],
         name: json["name"],
         plantName: json["plant_name"],
-        progress: json["progress"],
+        progress: json["progress"].toString(),
+        isDone: json["is_done"] is bool
+            ? json["is_done"]
+            : json["is_done"].toString() == '1'
+                ? true
+                : false,
         picture: json["picture"],
         finishTask: json["finish_task"],
         totalTask: json["total_task"],

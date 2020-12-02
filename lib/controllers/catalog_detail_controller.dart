@@ -2,6 +2,8 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ufarming/controllers/home_controller.dart';
+import 'package:ufarming/models/activity_model.dart';
+import 'package:ufarming/models/myplant_model.dart';
 import 'package:ufarming/models/plant_detail_model.dart';
 import 'package:ufarming/services/plant_service.dart';
 import 'package:ufarming/utils/const.dart';
@@ -41,11 +43,15 @@ class CatalogDetailController extends GetxController {
   void addMyPlantHandler() async {
     try {
       BotToast.showLoading();
-      await addMyPlant(id, controller.text).then((res) {
-        if (res == true) {
-          Get.find<HomeController>().fetchData();
-          Get.back();
-          Get.back();
+      await addMyPlant(id, controller.text).then((res) async {
+        if (res is MyPlant) {
+          await postDefaultChecklist(res.id).then((v) {
+            if (v is List<Activity>) {
+              Get.find<HomeController>().fetchData();
+              Get.back();
+              Get.back();
+            }
+          });
         }
       });
     } catch (e) {
