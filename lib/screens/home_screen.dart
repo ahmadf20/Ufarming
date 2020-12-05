@@ -43,16 +43,6 @@ class HomeScreen extends StatelessWidget {
               color: Colors.black87,
             ),
           ),
-          // SizedBox(height: 5),
-          // Text(
-          //   "The love of gardening is a seed once sown that never dies. — Gertrude Jekyll",
-          //   style: TextStyle(
-          //     fontFamily: 'OpenSans',
-          //     fontSize: 14,
-          //     fontWeight: FontWeight.w600,
-          //     color: MyColors.grey,
-          //   ),
-          // ),
           SizedBox(height: 30),
           GestureDetector(
             onTap: () => Get.to(WeatherScreen()),
@@ -119,11 +109,12 @@ class HomeScreen extends StatelessWidget {
                                                 children: [
                                                   Text(
                                                     weatherController
-                                                        .weather
-                                                        .value
-                                                        .current
-                                                        .condition
-                                                        .text,
+                                                            ?.weather
+                                                            ?.value
+                                                            ?.current
+                                                            ?.condition
+                                                            ?.text ??
+                                                        'Not Available',
                                                     style: TextStyle(
                                                       fontFamily: 'Montserrat',
                                                       fontSize: 12,
@@ -136,7 +127,7 @@ class HomeScreen extends StatelessWidget {
                                                   ),
                                                   SizedBox(height: 5),
                                                   Text(
-                                                    '${weatherController.weather.value.current.tempC.toString()}ºC',
+                                                    '${weatherController.weather?.value?.current?.tempC.toString() ?? '-'}ºC',
                                                     style: TextStyle(
                                                       fontFamily: 'Montserrat',
                                                       fontSize: 18,
@@ -150,7 +141,7 @@ class HomeScreen extends StatelessWidget {
                                             ),
                                             SizedBox(width: 15),
                                             loadImage(
-                                                'https:${weatherController.weather.value.current.condition.icon}'),
+                                                'https:${weatherController?.weather?.value?.current?.condition?.icon ?? ''}'),
                                           ],
                                         );
                                 }),
@@ -299,7 +290,7 @@ class _MyPlantCard extends StatelessWidget {
                               ),
                               SizedBox(height: 3),
                               Text(
-                                '${data.progress}%',
+                                '${data.isDone ? 100 : data.progress}%',
                                 style: TextStyle(
                                   fontFamily: 'Montserrat',
                                   fontSize: 20,
@@ -315,7 +306,9 @@ class _MyPlantCard extends StatelessWidget {
                       LinearPercentIndicator(
                         padding: EdgeInsets.symmetric(horizontal: 5),
                         lineHeight: 5,
-                        percent: double.parse(data.progress) / 100,
+                        percent:
+                            double.parse(data.isDone ? '100' : data.progress) /
+                                100,
                         progressColor: MyColors.gold,
                         backgroundColor: MyColors.lightGrey,
                       ),

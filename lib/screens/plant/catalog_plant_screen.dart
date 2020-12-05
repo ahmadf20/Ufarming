@@ -46,21 +46,25 @@ class CatalogPlantScreen extends StatelessWidget {
                 Expanded(
                   child: s.isLoading.value
                       ? loadingIndicator()
-                      : GridView.builder(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 0.85,
-                            crossAxisSpacing: 15,
-                            mainAxisSpacing: 15,
-                          ),
-                          padding: EdgeInsets.fromLTRB(25, 15, 25, 35),
-                          itemCount: s.plantList.length,
-                          itemBuilder: (context, index) {
-                            return _CardItem(plant: s.plantList[index]);
-                          },
-                        ),
-                )
+                      : s.plantList.isEmpty
+                          ? Center(
+                              child: Text('No Result'),
+                            )
+                          : GridView.builder(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 0.85,
+                                crossAxisSpacing: 15,
+                                mainAxisSpacing: 15,
+                              ),
+                              padding: EdgeInsets.fromLTRB(25, 15, 25, 35),
+                              itemCount: s.plantList.length,
+                              itemBuilder: (context, index) {
+                                return _CardItem(plant: s.plantList[index]);
+                              },
+                            ),
+                ),
               ],
             ),
           ),
@@ -103,7 +107,7 @@ class _CardItem extends StatelessWidget {
                 height: 110,
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             Text(
               plant.plantName,
               style: TextStyle(

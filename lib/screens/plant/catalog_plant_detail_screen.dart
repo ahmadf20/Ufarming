@@ -79,6 +79,8 @@ class CatalogDetailScreen extends StatelessWidget {
                           ],
                         ),
                       ),
+                      isScrollControlled: true,
+                      enableDrag: true,
                       enterBottomSheetDuration: Duration(microseconds: 200),
                       exitBottomSheetDuration: Duration(microseconds: 200),
                     ),

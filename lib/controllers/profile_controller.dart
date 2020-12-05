@@ -30,7 +30,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  updateUser(User newUser) {
+  void updateUser(User newUser) {
     user.update((val) {
       val.name = newUser.name;
       val.email = newUser.email;
@@ -39,6 +39,12 @@ class ProfileController extends GetxController {
       val.profilePicture = newUser.profilePicture;
       val.activePlant = newUser.activePlant;
       val.username = newUser.username;
+    });
+  }
+
+  void updateImage(User newUser) {
+    user.update((val) {
+      val.profilePicture = newUser.profilePicture;
     });
   }
 }

@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:ufarming/controllers/weather_controller.dart';
 import 'package:ufarming/models/myplant_model.dart';
 import 'package:ufarming/services/plant_service.dart';
 import 'package:ufarming/utils/const.dart';
@@ -43,6 +44,9 @@ class HomeController extends GetxController {
   }
 
   void updateLatLong(double latitude, double longitude) {
+    Get.find<WeatherController>()
+        .fetchData(latitude.toString(), longitude.toString());
+
     lat.value = latitude;
     long.value = longitude;
   }

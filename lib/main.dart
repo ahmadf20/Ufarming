@@ -89,7 +89,10 @@ class MyApp extends StatelessWidget {
       theme: themeData,
       builder: BotToastInit(),
       navigatorObservers: [BotToastNavigatorObserver()],
-      home: BaseWidget(),
+      home: AnnotatedRegion(
+        child: BaseWidget(),
+        value: mySystemUIOverlaySyle,
+      ),
     );
   }
 }

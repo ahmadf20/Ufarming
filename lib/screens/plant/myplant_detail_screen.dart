@@ -31,6 +31,15 @@ class MyPlantDetailScreen extends StatelessWidget {
             preferredSize: Size.fromHeight(60),
             child: MyAppBar(
               title: 'Detail Plant',
+              actions: [
+                if (data.isDone)
+                  IconButton(
+                    icon: Icon(Icons.delete_outline),
+                    onPressed: () {
+                      s.delMyPlant();
+                    },
+                  )
+              ],
             ),
           ),
           body: s.isLoading.value
@@ -90,7 +99,7 @@ class MyPlantDetailScreen extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      '${data.progress}%',
+                                      '${data.isDone ? 100 : data.progress}%',
                                       style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 20,
@@ -106,7 +115,9 @@ class MyPlantDetailScreen extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(horizontal: 5),
                                 width: 150,
                                 lineHeight: 5,
-                                percent: double.parse(data.progress) / 100,
+                                percent: double.parse(
+                                        data.isDone ? '100' : data.progress) /
+                                    100,
                                 progressColor: MyColors.gold,
                                 backgroundColor: MyColors.lightGrey,
                               ),

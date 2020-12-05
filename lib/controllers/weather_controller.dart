@@ -8,15 +8,10 @@ class WeatherController extends GetxController {
   final Rx<Weather> weather = Weather().obs;
   RxBool isLoading = true.obs;
 
-  @override
-  void onInit() {
-    fetchData();
-    super.onInit();
-  }
-
-  void fetchData() async {
+  void fetchData(String lat, String long) async {
     try {
-      await getWeatherData('-6.8446067', '107.543945').then((res) {
+      await getWeatherData(lat ?? '-6.121435', long ?? '106.774124')
+          .then((res) {
         if (res is Weather) {
           updateLocalData(res);
         } else {
@@ -26,7 +21,7 @@ class WeatherController extends GetxController {
     } catch (e) {
       customBotToastText(ErrorMessage.general);
     } finally {
-      isLoading.toggle();
+      if (isLoading.value) isLoading.toggle();
     }
   }
 
